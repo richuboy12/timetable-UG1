@@ -512,6 +512,15 @@
     return `${start} – ${end}`;
   }
 
+  // Convert 24-hour time to 12-hour format with AM/PM
+  function format12HourTime(hhmm) {
+    const [h, m] = hhmm.split(":").map(Number);
+    const period = h >= 12 ? "PM" : "AM";
+    const hour12 = h % 12 || 12;
+    const minutes = String(m).padStart(2, "0");
+    return `${hour12}:${minutes}${period}`;
+  }
+
   // Picks the most recent week_date that is on or before today.
   function selectCurrentWeek(rows) {
     const today = new Date();
@@ -646,7 +655,7 @@
 
     const time = document.createElement("div");
     time.className = "class-time";
-    time.textContent = `${row.start_time}–${row.end_time}`;
+    time.textContent = `${format12HourTime(row.start_time)}–${format12HourTime(row.end_time)}`;
 
     const main = document.createElement("div");
     main.className = "class-main";

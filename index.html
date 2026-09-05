@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UG1 Timetable — IIIT Sri City</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<style>
+  :root {
+    --bg: #0E0F11;
+    --surface: #17181B;
+    --border: #26282C;
+    --text-primary: #EDEEF0;
+    --text-muted: #8A8D93;
+    --accent: #7CF29C;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  a { color: inherit; }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  /* ---------- Shared layout ---------- */
+
+  .app {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header.topbar {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .brand span { color: var(--text-muted); font-weight: 500; }
+
+  .change-roll {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--border);
+  }
+  .change-roll:hover { color: var(--text-primary); }
+
+  /* ---------- Entry screen ---------- */
+
+  .entry {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+    max-width: 420px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .entry h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 1.3;
+    margin: 0;
+  }
+
+  .entry p.sub {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin: -12px 0 0;
+    line-height: 1.5;
+  }
+
+  .field-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  input#roll-input {
+    flex: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    padding: 13px 14px;
+    border-radius: 0;
+    outline: none;
+    letter-spacing: 0.02em;
+  }
+  input#roll-input:focus { border-color: var(--text-muted); }
+  input#roll-input::placeholder { color: var(--text-muted); }
+
+  button#roll-submit {
+    background: var(--accent);
+    color: #0E0F11;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 0 20px;
+    cursor: pointer;
+  }
+  button#roll-submit:hover { opacity: 0.88; }
+  button#roll-submit:disabled { opacity: 0.4; cursor: default; }
+
+  .entry-error {
+    font-size: 13px;
+    color: #E88;
+    margin-top: -8px;
+    display: none;
+  }
+  .entry-error.show { display: block; }
+
+  .entry-loading, .entry-note {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* ---------- Timetable screen ---------- */
+
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .meta-row .student-name {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  nav.day-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+    overflow-x: auto;
+  }
+
+  nav.day-tabs button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 10px 14px 12px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+  }
+
+  nav.day-tabs button.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent);
+  }
+
+  nav.day-tabs button:hover:not(.active) { color: var(--text-primary); }
+
+  .day-panel { display: none; }
+  .day-panel.active { display: block; }
+
+  .class-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 14px 2px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .class-time {
+    color: var(--text-muted);
+    font-size: 13px;
+    width: 92px;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .class-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .class-subject {
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  .class-type {
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .class-room {
+    font-size: 14px;
+    color: var(--text-primary);
+    text-align: right;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .class-row.is-next .class-room {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .empty-day {
+    padding: 28px 2px;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  footer.app-footer {
+    margin-top: 32px;
+    color: var(--text-muted);
+    font-size: 12px;
+    text-align: left;
+  }
+
+  [hidden] { display: none !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+
+  button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ENTRY SCREEN -->
+  <section class="entry" id="entry-screen">
+    <div>
+      <h1>Your UG1 timetable</h1>
+      <p class="sub">Enter your roll number to see this week's classes, sections, and rooms.</p>
+    </div>
+    <div class="field-row">
+      <input id="roll-input" type="text" placeholder="e.g. S20260010056" autocomplete="off" autocapitalize="characters">
+      <button id="roll-submit">Go</button>
+    </div>
+    <div class="entry-error" id="entry-error">Roll number not recognized. Check it and try again.</div>
+    <div class="entry-loading" id="entry-loading" hidden>Loading…</div>
+    <div class="entry-note" id="entry-note" hidden>Couldn't reach the data files. Check your connection and try again.</div>
+  </section>
+
+  <!-- TIMETABLE SCREEN -->
+  <div id="timetable-screen" hidden>
+    <header class="topbar">
+      <div class="brand">Timetable<span>·UG1</span></div>
+      <button class="change-roll" id="change-roll-btn">Change roll number</button>
+    </header>
+
+    <div class="meta-row">
+      <div><span class="student-name" id="student-name"></span> · <span id="student-batch"></span></div>
+      <div id="week-label"></div>
+    </div>
+
+    <nav class="day-tabs" id="day-tabs"></nav>
+    <div id="day-panels"></div>
+
+    <footer class="app-footer" id="app-footer"></footer>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------------------------------------------------------------
+  // CONFIG — point these at your GitHub repo once it's created.
+  // Data is fetched at runtime from raw.githubusercontent.com, so
+  // editing the CSVs in the repo updates the site with no rebuild.
+  // ---------------------------------------------------------------
+  const CONFIG = {
+    GITHUB_USER: "YOUR_GITHUB_USERNAME",
+    GITHUB_REPO: "YOUR_REPO_NAME",
+    GITHUB_BRANCH: "main",
+    DATA_PATH: "data" // folder inside the repo holding timetable.csv / roster.csv
+  };
+
+  function rawUrl(filename) {
+    return `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.DATA_PATH}/${filename}?t=${Date.now()}`;
+  }
+
+  // Local fallback so the site works before the GitHub repo/config
+  // above is filled in (e.g. testing straight off disk or Netlify
+  // preview with the CSVs sitting next to index.html).
+  function localUrl(filename) {
+    return `./data/${filename}?t=${Date.now()}`;
+  }
+
+  const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  const STORAGE_KEY = "ug1_timetable_roll_no";
+
+  // Subject codes resolvable from roster.csv in v1.
+  // EE / EDL are intentionally excluded — no per-student section
+  // data exists for them yet (see architecture doc, "Known gaps").
+  const SECTIONED_CODES = ["CP", "DLD", "OCW"];
+  const DSMA_CODE = "DSMA";
+  const COMMON_SECTION = "ALL";
+
+  const els = {
+    entryScreen: document.getElementById("entry-screen"),
+    rollInput: document.getElementById("roll-input"),
+    rollSubmit: document.getElementById("roll-submit"),
+    entryError: document.getElementById("entry-error"),
+    entryLoading: document.getElementById("entry-loading"),
+    entryNote: document.getElementById("entry-note"),
+    timetableScreen: document.getElementById("timetable-screen"),
+    changeRollBtn: document.getElementById("change-roll-btn"),
+    studentName: document.getElementById("student-name"),
+    studentBatch: document.getElementById("student-batch"),
+    weekLabel: document.getElementById("week-label"),
+    dayTabs: document.getElementById("day-tabs"),
+    dayPanels: document.getElementById("day-panels"),
+    appFooter: document.getElementById("app-footer")
+  };
+
+  let rosterRows = null;
+  let timetableRows = null;
+
+  // ---------------- CSV loading ----------------
+
+  function fetchCsv(filename) {
+    return fetch(rawUrl(filename))
+      .then(res => {
+        if (!res.ok) throw new Error("raw fetch failed");
+        return res.text();
+      })
+      .catch(() => fetch(localUrl(filename)).then(res => {
+        if (!res.ok) throw new Error("local fetch failed");
+        return res.text();
+      }))
+      .then(text => Papa.parse(text, { header: true, skipEmptyLines: true }).data);
+  }
+
+  function loadData() {
+    if (rosterRows && timetableRows) {
+      return Promise.resolve();
+    }
+    return Promise.all([fetchCsv("roster.csv"), fetchCsv("timetable.csv")])
+      .then(([roster, timetable]) => {
+        rosterRows = roster;
+        timetableRows = timetable;
+      });
+  }
+
+  // ---------------- Date helpers ----------------
+
+  function parseISODate(str) {
+    const [y, m, d] = str.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  }
+
+  function addDays(date, n) {
+    const d = new Date(date);
+    d.setDate(d.getDate() + n);
+    return d;
+  }
+
+  function combineDateAndTime(date, hhmm) {
+    const [h, m] = hhmm.split(":").map(Number);
+    const d = new Date(date);
+    d.setHours(h, m, 0, 0);
+    return d;
+  }
+
+  function formatWeekLabel(mondayDate) {
+    const opts = { day: "numeric", month: "short" };
+    const start = mondayDate.toLocaleDateString("en-GB", opts);
+    const end = addDays(mondayDate, 5).toLocaleDateString("en-GB", opts);
+    return `${start} – ${end}`;
+  }
+
+  // Picks the most recent week_date that is on or before today.
+  function selectCurrentWeek(rows) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let best = null;
+    for (const row of rows) {
+      if (!row.week_date) continue;
+      const wd = parseISODate(row.week_date);
+      if (wd <= today && (!best || wd > best)) {
+        best = wd;
+      }
+    }
+    // If every stored week is in the future, fall back to the earliest one
+    // so the site still shows something rather than a blank state.
+    if (!best) {
+      for (const row of rows) {
+        if (!row.week_date) continue;
+        const wd = parseISODate(row.week_date);
+        if (!best || wd < best) best = wd;
+      }
+    }
+    return best;
+  }
+
+  // ---------------- Core logic ----------------
+
+  function findStudent(rollNo) {
+    const target = rollNo.trim().toUpperCase();
+    return rosterRows.find(r => (r.roll_no || "").trim().toUpperCase() === target) || null;
+  }
+
+  function buildScheduleForStudent(student) {
+    const weekMonday = selectCurrentWeek(timetableRows);
+    const weekDateStr = weekMonday
+      ? `${weekMonday.getFullYear()}-${String(weekMonday.getMonth() + 1).padStart(2, "0")}-${String(weekMonday.getDate()).padStart(2, "0")}`
+      : null;
+
+    const relevant = timetableRows.filter(row => {
+      if (!row.week_date || row.week_date !== weekDateStr) return false;
+      if (!row.subject_code) return false;
+
+      if (row.section === COMMON_SECTION) return true;
+      if (SECTIONED_CODES.includes(row.subject_code)) {
+        return row.section === student.cp_dld_ocw_section;
+      }
+      if (row.subject_code === DSMA_CODE) {
+        return row.section === student.dsma_section;
+      }
+      return false; // e.g. EE/EDL — excluded in v1, no roster mapping
+    });
+
+    // Attach a real Date for sorting + "next class" comparison.
+    relevant.forEach(row => {
+      const dayIndex = DAYS.indexOf(row.day);
+      const dayDate = dayIndex >= 0 ? addDays(weekMonday, dayIndex) : weekMonday;
+      row._start = combineDateAndTime(dayDate, row.start_time);
+      row._end = combineDateAndTime(dayDate, row.end_time);
+    });
+
+    relevant.sort((a, b) => a._start - b._start);
+
+    const byDay = {};
+    DAYS.forEach(d => (byDay[d] = []));
+    relevant.forEach(row => {
+      if (byDay[row.day]) byDay[row.day].push(row);
+    });
+
+    const now = new Date();
+    let nextClass = null;
+    for (const row of relevant) {
+      if (row._end > now) { nextClass = row; break; }
+    }
+
+    return { weekMonday, byDay, nextClass };
+  }
+
+  // ---------------- Rendering ----------------
+
+  function renderTimetable(student, schedule) {
+    els.studentName.textContent = student.name;
+    els.studentBatch.textContent = student.batch;
+    els.weekLabel.textContent = schedule.weekMonday ? formatWeekLabel(schedule.weekMonday) : "";
+
+    els.dayTabs.innerHTML = "";
+    els.dayPanels.innerHTML = "";
+
+    const now = new Date();
+    const todayName = DAYS[(now.getDay() + 6) % 7] || null; // Mon=0..Sat=5, Sun -> not in DAYS
+
+    let defaultDay = DAYS.find(d => d === todayName && schedule.byDay[d].length > 0);
+    if (!defaultDay) {
+      defaultDay = DAYS.find(d => schedule.byDay[d].length > 0) || DAYS[0];
+    }
+
+    DAYS.forEach(day => {
+      const tab = document.createElement("button");
+      tab.textContent = day.slice(0, 3);
+      tab.dataset.day = day;
+      tab.className = day === defaultDay ? "active" : "";
+      tab.addEventListener("click", () => setActiveDay(day));
+      els.dayTabs.appendChild(tab);
+
+      const panel = document.createElement("div");
+      panel.className = "day-panel" + (day === defaultDay ? " active" : "");
+      panel.dataset.day = day;
+
+      const rows = schedule.byDay[day];
+      if (rows.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty-day";
+        empty.textContent = day === "Saturday" || day === "Sunday" ? "No classes today." : "No classes scheduled.";
+        panel.appendChild(empty);
+      } else {
+        rows.forEach(row => {
+          const isNext = schedule.nextClass && row === schedule.nextClass;
+          panel.appendChild(renderClassRow(row, isNext));
+        });
+      }
+      els.dayPanels.appendChild(panel);
+    });
+
+    function setActiveDay(day) {
+      els.dayTabs.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.day === day));
+      els.dayPanels.querySelectorAll(".day-panel").forEach(p => p.classList.toggle("active", p.dataset.day === day));
+    }
+  }
+
+  function renderClassRow(row, isNext) {
+    const el = document.createElement("div");
+    el.className = "class-row" + (isNext ? " is-next" : "");
+
+    const time = document.createElement("div");
+    time.className = "class-time";
+    time.textContent = `${row.start_time}–${row.end_time}`;
+
+    const main = document.createElement("div");
+    main.className = "class-main";
+    const subj = document.createElement("div");
+    subj.className = "class-subject";
+    subj.textContent = row.subject_name || row.subject_code;
+    main.appendChild(subj);
+    if (row.type) {
+      const type = document.createElement("div");
+      type.className = "class-type";
+      type.textContent = row.section === COMMON_SECTION ? row.type : `${row.type} · Section ${row.section}`;
+      main.appendChild(type);
+    }
+
+    const room = document.createElement("div");
+    room.className = "class-room";
+    room.textContent = row.room ? row.room : "—";
+
+    el.appendChild(time);
+    el.appendChild(main);
+    el.appendChild(room);
+    return el;
+  }
+
+  // ---------------- Screen flow ----------------
+
+  function showEntryScreen() {
+    els.timetableScreen.hidden = true;
+    els.entryScreen.hidden = false;
+    els.rollInput.value = "";
+    els.entryError.classList.remove("show");
+    els.rollInput.focus();
+  }
+
+  function showTimetableScreen(student) {
+    const schedule = buildScheduleForStudent(student);
+    renderTimetable(student, schedule);
+    els.entryScreen.hidden = true;
+    els.timetableScreen.hidden = false;
+  }
+
+  function handleRollSubmit() {
+    const rollNo = els.rollInput.value.trim();
+    if (!rollNo) return;
+
+    els.entryError.classList.remove("show");
+    els.entryNote.hidden = true;
+    els.entryLoading.hidden = false;
+    els.rollSubmit.disabled = true;
+
+    loadData()
+      .then(() => {
+        const student = findStudent(rollNo);
+        if (!student) {
+          els.entryError.classList.add("show");
+          return;
+        }
+        localStorage.setItem(STORAGE_KEY, rollNo);
+        showTimetableScreen(student);
+      })
+      .catch(() => {
+        els.entryNote.hidden = false;
+      })
+      .finally(() => {
+        els.entryLoading.hidden = true;
+        els.rollSubmit.disabled = false;
+      });
+  }
+
+  function init() {
+    els.rollSubmit.addEventListener("click", handleRollSubmit);
+    els.rollInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") handleRollSubmit();
+    });
+    els.changeRollBtn.addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      showEntryScreen();
+    });
+
+    const savedRoll = localStorage.getItem(STORAGE_KEY);
+    if (savedRoll) {
+      els.entryLoading.hidden = false;
+      loadData()
+        .then(() => {
+          const student = findStudent(savedRoll);
+          if (student) {
+            showTimetableScreen(student);
+          } else {
+            localStorage.removeItem(STORAGE_KEY);
+            showEntryScreen();
+          }
+        })
+        .catch(() => {
+          showEntryScreen();
+          els.entryNote.hidden = false;
+        })
+        .finally(() => { els.entryLoading.hidden = true; });
+    } else {
+      showEntryScreen();
+    }
+  }
+
+  init();
+})();
+</script>
+
+</body>
+</html>

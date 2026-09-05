@@ -320,13 +320,12 @@
   // Data is fetched at runtime from raw.githubusercontent.com, so
   // editing the CSVs in the repo updates the site with no rebuild.
   // ---------------------------------------------------------------
-  const CONFIG = {
-    GITHUB_USER: "YOUR_GITHUB_USERNAME",
-    GITHUB_REPO: "YOUR_REPO_NAME",
-    GITHUB_BRANCH: "main",
-    DATA_PATH: "data" // folder inside the repo holding timetable.csv / roster.csv
-  };
-
+ const CONFIG = {
+  GITHUB_USER: "richuboy12",
+  GITHUB_REPO: "timetable-UG1",
+  GITHUB_BRANCH: "main",
+  DATA_PATH: "data"
+};
   function rawUrl(filename) {
     return `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.DATA_PATH}/${filename}?t=${Date.now()}`;
   }

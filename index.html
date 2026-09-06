@@ -282,6 +282,10 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .class-time.hidden {
+    display: none;
+  }
+
   .class-main {
     flex: 1;
     min-width: 0;
@@ -298,6 +302,10 @@
     color: var(--text-muted);
     font-size: 13px;
     margin-top: 2px;
+  }
+
+  .class-type.hidden {
+    display: none;
   }
 
   .class-room {
@@ -652,7 +660,7 @@
       } else {
         rows.forEach(row => {
           const isNext = schedule.nextClass && row === schedule.nextClass;
-          panel.appendChild(renderClassRow(row, isNext));
+          panel.appendChild(renderClassRow(row, isNext, day));
         });
       }
       els.dayPanels.appendChild(panel);
@@ -664,12 +672,16 @@
     }
   }
 
-  function renderClassRow(row, isNext) {
+  function renderClassRow(row, isNext, day) {
     const el = document.createElement("div");
     el.className = "class-row" + (isNext ? " is-next" : "");
 
+    const isSaturday = day === "Saturday";
+    const isHVE = (row.subject_name || "").toLowerCase().includes("foundation in human values") || 
+                  (row.subject_code || "").toLowerCase().includes("hve");
+
     const time = document.createElement("div");
-    time.className = "class-time";
+    time.className = "class-time" + (isSaturday ? " hidden" : "");
     time.textContent = `${format12HourTime(row.start_time)}–${format12HourTime(row.end_time)}`;
 
     const main = document.createElement("div");
@@ -680,7 +692,7 @@
     main.appendChild(subj);
     if (row.type) {
       const type = document.createElement("div");
-      type.className = "class-type";
+      type.className = "class-type" + (isSaturday ? " hidden" : "");
       type.textContent = row.section === COMMON_SECTION ? row.type : `${row.type} · Section ${row.section}`;
       main.appendChild(type);
     }

@@ -11,15 +11,14 @@
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="shortcut icon" href="favicon.ico">
 
-<!-- Add-to-homescreen icon (iOS) -->
+<!-- Installable web app -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#fdfbf7">
+<meta name="mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="IIITS Timetable">
-
-<!-- Add-to-homescreen (Android / PWA) -->
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#fdfbf7">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,6 +110,24 @@
   }
 
   .brand-text span { color: var(--text-muted); font-weight: 400; text-decoration: none; }
+
+  .install-btn {
+    align-self: flex-end;
+    background: var(--accent-blue);
+    color: #fff;
+    border: 2px solid var(--border);
+    border-radius: var(--wobbly-sm);
+    font-family: 'Kalam', cursive;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 14px;
+    margin-bottom: 14px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px 0px var(--border);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+  .install-btn:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0px 0px var(--border); }
+  .install-btn:active { transform: translate(3px, 3px); box-shadow: none; }
 
   .change-roll {
     background: var(--muted-bg);
@@ -312,6 +329,10 @@
     font-variant-numeric: tabular-nums;
   }
 
+  .class-time.hidden {
+    display: none;
+  }
+
   .class-main {
     flex: 1;
     min-width: 0;
@@ -328,6 +349,10 @@
     color: var(--text-muted);
     font-size: 13px;
     margin-top: 2px;
+  }
+
+  .class-type.hidden {
+    display: none;
   }
 
   .class-room {
@@ -381,6 +406,19 @@
     text-align: left;
   }
 
+  .made-by {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.45;
+    font-size: 11px;
+    text-align: center;
+    padding: 12px 20px;
+    background: var(--bg);
+    border-top: 1px solid var(--muted-bg);
+  }
+
   [hidden] { display: none !important; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -397,6 +435,8 @@
 
 <div class="app">
 
+  <button id="install-btn" class="install-btn" hidden>Install app</button>
+
   <!-- ENTRY SCREEN -->
   <section class="entry" id="entry-screen">
     <div>
@@ -404,7 +444,7 @@
       <p class="sub">Enter your roll number to see this week's classes, sections, and rooms.</p>
     </div>
     <div class="field-row">
-      <input id="roll-input" type="text" placeholder="e.g. S20260010056" autocomplete="off" autocapitalize="characters">
+      <input id="roll-input" type="text" placeholder="e.g. S2026*******" autocomplete="off" autocapitalize="characters">
       <button id="roll-submit">Go</button>
     </div>
     <div class="entry-error" id="entry-error">Roll number not recognized. Check it and try again.</div>
@@ -431,6 +471,8 @@
   </div>
 
 </div>
+
+<div class="made-by">Made by Muhammed Rinshal A</div>
 
 <script>
 (function () {
@@ -483,7 +525,8 @@
     weekLabel: document.getElementById("week-label"),
     dayTabs: document.getElementById("day-tabs"),
     dayPanels: document.getElementById("day-panels"),
-    appFooter: document.getElementById("app-footer")
+    appFooter: document.getElementById("app-footer"),
+    installBtn: document.getElementById("install-btn")
   };
 
   let rosterRows = null;
@@ -667,7 +710,7 @@
       } else {
         rows.forEach(row => {
           const isNext = schedule.nextClass && row === schedule.nextClass;
-          panel.appendChild(renderClassRow(row, isNext));
+          panel.appendChild(renderClassRow(row, isNext, day));
         });
       }
       els.dayPanels.appendChild(panel);
@@ -679,12 +722,16 @@
     }
   }
 
-  function renderClassRow(row, isNext) {
+  function renderClassRow(row, isNext, day) {
     const el = document.createElement("div");
     el.className = "class-row" + (isNext ? " is-next" : "");
 
+    const isSaturday = day === "Saturday";
+    const isHVE = (row.subject_name || "").toLowerCase().includes("foundation in human values") || 
+                  (row.subject_code || "").toLowerCase().includes("hve");
+
     const time = document.createElement("div");
-    time.className = "class-time";
+    time.className = "class-time" + (isSaturday ? " hidden" : "");
     time.textContent = `${format12HourTime(row.start_time)}–${format12HourTime(row.end_time)}`;
 
     const main = document.createElement("div");
@@ -695,7 +742,7 @@
     main.appendChild(subj);
     if (row.type) {
       const type = document.createElement("div");
-      type.className = "class-type";
+      type.className = "class-type" + (isSaturday ? " hidden" : "");
       type.textContent = row.section === COMMON_SECTION ? row.type : `${row.type} · Section ${row.section}`;
       main.appendChild(type);
     }
@@ -788,7 +835,42 @@
     }
   }
 
+  // ---------------- Installable web app ----------------
+
+  function initInstallPrompt() {
+    if (!els.installBtn) return;
+    let deferredPrompt = null;
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      els.installBtn.hidden = false;
+    });
+
+    els.installBtn.addEventListener("click", async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      els.installBtn.hidden = true;
+    });
+
+    window.addEventListener("appinstalled", () => {
+      els.installBtn.hidden = true;
+      deferredPrompt = null;
+    });
+  }
+
+  function initServiceWorker() {
+    if (!("serviceWorker" in navigator)) return;
+    navigator.serviceWorker.register("sw.js").catch(() => {
+      // Non-fatal — the site still works without offline/install support.
+    });
+  }
+
   init();
+  initInstallPrompt();
+  initServiceWorker();
 })();
 </script>
 

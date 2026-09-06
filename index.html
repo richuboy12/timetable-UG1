@@ -4,6 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UG1 Timetable — IIIT Sri City</title>
+
+<!-- Favicon / tab icon -->
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="shortcut icon" href="favicon.ico">
+
+<!-- Add-to-homescreen icon (iOS) -->
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IIITS Timetable">
+
+<!-- Add-to-homescreen (Android / PWA) -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#fdfbf7">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
@@ -69,10 +86,23 @@
   }
 
   .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-family: 'Kalam', cursive;
     font-weight: 700;
     font-size: 21px;
     letter-spacing: 0;
+  }
+
+  .brand-mark {
+    height: 30px;
+    width: auto;
+    flex-shrink: 0;
+    transform: rotate(-3deg);
+  }
+
+  .brand-text {
     text-decoration: underline;
     text-decoration-style: wavy;
     text-decoration-color: var(--accent);
@@ -80,7 +110,7 @@
     text-decoration-thickness: 2px;
   }
 
-  .brand span { color: var(--text-muted); font-weight: 400; text-decoration: none; }
+  .brand-text span { color: var(--text-muted); font-weight: 400; text-decoration: none; }
 
   .change-roll {
     background: var(--muted-bg);
@@ -385,7 +415,7 @@
   <!-- TIMETABLE SCREEN -->
   <div id="timetable-screen" hidden>
     <header class="topbar">
-      <div class="brand">Timetable<span>·UG1</span></div>
+      <div class="brand"><img src="logo-mark.png" alt="" class="brand-mark"><span class="brand-text">Timetable<span>·UG1</span></span></div>
       <button class="change-roll" id="change-roll-btn">Change roll number</button>
     </header>
 

@@ -49,6 +49,8 @@
     color: var(--text-primary);
     font-family: 'Patrick Hand', cursive, sans-serif;
     -webkit-font-smoothing: antialiased;
+    height: 100%;
+    overscroll-behavior: none;
   }
 
   body {
@@ -297,8 +299,56 @@
 
   nav.day-tabs button:hover:not(.active) { color: var(--text-primary); transform: rotate(1deg); }
 
-  .day-panel { display: none; }
-  .day-panel.active { display: block; }
+  .day-panel { 
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  
+  .day-panel.active { 
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .day-panel.slide-in-left {
+    display: block;
+    animation: slideInLeft 0.4s ease;
+  }
+
+  .day-panel.slide-in-right {
+    display: block;
+    animation: slideInRight 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(30px) rotate(-0.5deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) rotate(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(-30px) rotate(0.5deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) rotate(0);
+    }
+  }
 
   .class-row {
     display: flex;
@@ -423,6 +473,9 @@
 
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
+    .day-panel, .day-panel.active, .day-panel.slide-in-left, .day-panel.slide-in-right {
+      animation: none !important;
+    }
   }
 
   button:focus-visible, input:focus-visible {
@@ -531,6 +584,12 @@
 
   let rosterRows = null;
   let timetableRows = null;
+  let currentSchedule = null;
+
+  // Swipe tracking
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let lastSwipeDirection = null; // "left" or "right"
 
   // ---------------- CSV loading ----------------
 
@@ -619,6 +678,39 @@
     return best;
   }
 
+  // Get the first day with remaining classes from today onwards
+  function getFirstDayWithRemainingClasses(schedule) {
+    const now = new Date();
+    const todayName = DAYS[(now.getDay() + 6) % 7] || null; // Mon=0..Sat=5, Sun -> not in DAYS
+    const todayIndex = DAYS.indexOf(todayName);
+
+    // First, check if today has classes with remaining time
+    if (todayIndex >= 0 && schedule.byDay[todayName]) {
+      for (const row of schedule.byDay[todayName]) {
+        if (row._end > now) {
+          return todayName;
+        }
+      }
+    }
+
+    // If not, find the next day with classes
+    for (let i = 1; i < DAYS.length; i++) {
+      const day = DAYS[(todayIndex + i) % DAYS.length];
+      if (schedule.byDay[day].length > 0) {
+        return day;
+      }
+    }
+
+    // Fallback to first day with classes
+    for (const day of DAYS) {
+      if (schedule.byDay[day].length > 0) {
+        return day;
+      }
+    }
+
+    return DAYS[0];
+  }
+
   // ---------------- Core logic ----------------
 
   function findStudent(rollNo) {
@@ -673,7 +765,42 @@
 
   // ---------------- Rendering ----------------
 
+  // Switches the active day tab/panel, animating in the direction implied
+  // by the day order (later day -> slides in from the right / "left" anim,
+  // earlier day -> slides in from the left / "right" anim). Used by both
+  // tab clicks and swipe gestures so the motion is identical either way.
+  function setActiveDay(day) {
+    const tabs = els.dayTabs.querySelectorAll("button");
+    const panels = els.dayPanels.querySelectorAll(".day-panel");
+    const currentActive = els.dayTabs.querySelector("button.active");
+    const currentDay = currentActive ? currentActive.dataset.day : null;
+    const currentIndex = currentDay ? DAYS.indexOf(currentDay) : -1;
+    const nextIndex = DAYS.indexOf(day);
+
+    if (day === currentDay) return;
+
+    let animClass = "fadeIn";
+    if (currentIndex >= 0 && nextIndex >= 0) {
+      animClass = nextIndex > currentIndex ? "slide-in-left" : "slide-in-right";
+    }
+
+    tabs.forEach(b => b.classList.toggle("active", b.dataset.day === day));
+    panels.forEach(p => {
+      if (p.dataset.day === day) {
+        p.classList.remove("slide-in-left", "slide-in-right", "active");
+        // Force reflow to restart animation
+        void p.offsetWidth;
+        p.classList.add(animClass, "active");
+      } else {
+        p.classList.remove("slide-in-left", "slide-in-right", "active");
+      }
+    });
+
+    updateScrollLock();
+  }
+
   function renderTimetable(student, schedule) {
+    currentSchedule = schedule;
     els.studentName.textContent = student.name;
     els.studentBatch.textContent = student.batch;
     els.weekLabel.textContent = schedule.weekMonday ? formatWeekLabel(schedule.weekMonday) : "";
@@ -681,13 +808,8 @@
     els.dayTabs.innerHTML = "";
     els.dayPanels.innerHTML = "";
 
-    const now = new Date();
-    const todayName = DAYS[(now.getDay() + 6) % 7] || null; // Mon=0..Sat=5, Sun -> not in DAYS
-
-    let defaultDay = DAYS.find(d => d === todayName && schedule.byDay[d].length > 0);
-    if (!defaultDay) {
-      defaultDay = DAYS.find(d => schedule.byDay[d].length > 0) || DAYS[0];
-    }
+    // Get the default day: first day with remaining classes from today onwards
+    const defaultDay = getFirstDayWithRemainingClasses(schedule);
 
     DAYS.forEach(day => {
       const tab = document.createElement("button");
@@ -716,10 +838,7 @@
       els.dayPanels.appendChild(panel);
     });
 
-    function setActiveDay(day) {
-      els.dayTabs.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.day === day));
-      els.dayPanels.querySelectorAll(".day-panel").forEach(p => p.classList.toggle("active", p.dataset.day === day));
-    }
+    updateScrollLock();
   }
 
   function renderClassRow(row, isNext, day) {
@@ -757,6 +876,73 @@
     return el;
   }
 
+  // ---------------- Scroll lock ----------------
+
+  // Keeps the page from scrolling when the current content fits within
+  // the viewport (so the app feels "solid"/app-like), but still allows
+  // natural scrolling on days with enough classes/labs to overflow.
+  let scrollLockRaf = null;
+  function updateScrollLock() {
+    if (scrollLockRaf) cancelAnimationFrame(scrollLockRaf);
+    // Temporarily clear any lock so we measure the content's natural height.
+    document.documentElement.style.overflowY = "";
+    document.body.style.overflowY = "";
+    scrollLockRaf = requestAnimationFrame(() => {
+      const contentHeight = document.documentElement.scrollHeight;
+      const viewportHeight = window.innerHeight;
+      const fits = contentHeight <= viewportHeight + 1; // +1 to absorb rounding
+      document.documentElement.style.overflowY = fits ? "hidden" : "auto";
+      document.body.style.overflowY = fits ? "hidden" : "auto";
+      if (fits) window.scrollTo(0, 0);
+    });
+  }
+
+  window.addEventListener("resize", updateScrollLock);
+  window.addEventListener("orientationchange", updateScrollLock);
+
+  // ---------------- Swipe navigation ----------------
+
+  function handleSwipe() {
+    const diff = touchStartX - touchEndX;
+    const threshold = 50; // Minimum swipe distance
+
+    if (Math.abs(diff) < threshold) return;
+
+    // Get current active day
+    const activeTab = els.dayTabs.querySelector("button.active");
+    if (!activeTab) return;
+
+    const currentDay = activeTab.dataset.day;
+    const currentIndex = DAYS.indexOf(currentDay);
+
+    let nextIndex;
+    if (diff > 0) {
+      // Swipe left: go to next day
+      nextIndex = currentIndex + 1;
+    } else {
+      // Swipe right: go to previous day
+      nextIndex = currentIndex - 1;
+    }
+
+    // Clamp to valid range (don't wrap around)
+    if (nextIndex >= DAYS.length) nextIndex = DAYS.length - 1;
+    if (nextIndex < 0) nextIndex = 0;
+
+    const nextDay = DAYS[nextIndex];
+    setActiveDay(nextDay);
+  }
+
+  function initSwipeNavigation() {
+    els.dayPanels.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    els.dayPanels.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, false);
+  }
+
   // ---------------- Screen flow ----------------
 
   function showEntryScreen() {
@@ -765,6 +951,7 @@
     els.rollInput.value = "";
     els.entryError.classList.remove("show");
     els.rollInput.focus();
+    updateScrollLock();
   }
 
   function showTimetableScreen(student) {
@@ -772,6 +959,7 @@
     renderTimetable(student, schedule);
     els.entryScreen.hidden = true;
     els.timetableScreen.hidden = false;
+    updateScrollLock();
   }
 
   function handleRollSubmit() {
@@ -811,6 +999,9 @@
       localStorage.removeItem(STORAGE_KEY);
       showEntryScreen();
     });
+
+    // Initialize swipe navigation
+    initSwipeNavigation();
 
     const savedRoll = localStorage.getItem(STORAGE_KEY);
     if (savedRoll) {

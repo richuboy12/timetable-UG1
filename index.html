@@ -49,6 +49,8 @@
     color: var(--text-primary);
     font-family: 'Patrick Hand', cursive, sans-serif;
     -webkit-font-smoothing: antialiased;
+    height: 100%;
+    overscroll-behavior: none;
   }
 
   body {
@@ -763,6 +765,40 @@
 
   // ---------------- Rendering ----------------
 
+  // Switches the active day tab/panel, animating in the direction implied
+  // by the day order (later day -> slides in from the right / "left" anim,
+  // earlier day -> slides in from the left / "right" anim). Used by both
+  // tab clicks and swipe gestures so the motion is identical either way.
+  function setActiveDay(day) {
+    const tabs = els.dayTabs.querySelectorAll("button");
+    const panels = els.dayPanels.querySelectorAll(".day-panel");
+    const currentActive = els.dayTabs.querySelector("button.active");
+    const currentDay = currentActive ? currentActive.dataset.day : null;
+    const currentIndex = currentDay ? DAYS.indexOf(currentDay) : -1;
+    const nextIndex = DAYS.indexOf(day);
+
+    if (day === currentDay) return;
+
+    let animClass = "fadeIn";
+    if (currentIndex >= 0 && nextIndex >= 0) {
+      animClass = nextIndex > currentIndex ? "slide-in-left" : "slide-in-right";
+    }
+
+    tabs.forEach(b => b.classList.toggle("active", b.dataset.day === day));
+    panels.forEach(p => {
+      if (p.dataset.day === day) {
+        p.classList.remove("slide-in-left", "slide-in-right", "active");
+        // Force reflow to restart animation
+        void p.offsetWidth;
+        p.classList.add(animClass, "active");
+      } else {
+        p.classList.remove("slide-in-left", "slide-in-right", "active");
+      }
+    });
+
+    updateScrollLock();
+  }
+
   function renderTimetable(student, schedule) {
     currentSchedule = schedule;
     els.studentName.textContent = student.name;
@@ -780,7 +816,7 @@
       tab.textContent = day.slice(0, 3);
       tab.dataset.day = day;
       tab.className = day === defaultDay ? "active" : "";
-      tab.addEventListener("click", () => setActiveDay(day, "click"));
+      tab.addEventListener("click", () => setActiveDay(day));
       els.dayTabs.appendChild(tab);
 
       const panel = document.createElement("div");
@@ -802,32 +838,7 @@
       els.dayPanels.appendChild(panel);
     });
 
-    function setActiveDay(day, source = "click") {
-      const tabs = els.dayTabs.querySelectorAll("button");
-      const panels = els.dayPanels.querySelectorAll(".day-panel");
-      const currentActive = els.dayTabs.querySelector("button.active");
-      const currentDay = currentActive ? currentActive.dataset.day : null;
-      const currentIndex = currentDay ? DAYS.indexOf(currentDay) : -1;
-      const nextIndex = DAYS.indexOf(day);
-
-      // Determine animation direction based on swipe or click
-      let animClass = "fadeIn";
-      if (source === "swipe" && lastSwipeDirection) {
-        animClass = lastSwipeDirection === "left" ? "slide-in-left" : "slide-in-right";
-      }
-
-      tabs.forEach(b => b.classList.toggle("active", b.dataset.day === day));
-      panels.forEach(p => {
-        if (p.dataset.day === day) {
-          p.classList.remove("slide-in-left", "slide-in-right", "active");
-          // Force reflow to restart animation
-          void p.offsetWidth;
-          p.classList.add(animClass, "active");
-        } else {
-          p.classList.remove("slide-in-left", "slide-in-right", "active");
-        }
-      });
-    }
+    updateScrollLock();
   }
 
   function renderClassRow(row, isNext, day) {
@@ -865,6 +876,30 @@
     return el;
   }
 
+  // ---------------- Scroll lock ----------------
+
+  // Keeps the page from scrolling when the current content fits within
+  // the viewport (so the app feels "solid"/app-like), but still allows
+  // natural scrolling on days with enough classes/labs to overflow.
+  let scrollLockRaf = null;
+  function updateScrollLock() {
+    if (scrollLockRaf) cancelAnimationFrame(scrollLockRaf);
+    // Temporarily clear any lock so we measure the content's natural height.
+    document.documentElement.style.overflowY = "";
+    document.body.style.overflowY = "";
+    scrollLockRaf = requestAnimationFrame(() => {
+      const contentHeight = document.documentElement.scrollHeight;
+      const viewportHeight = window.innerHeight;
+      const fits = contentHeight <= viewportHeight + 1; // +1 to absorb rounding
+      document.documentElement.style.overflowY = fits ? "hidden" : "auto";
+      document.body.style.overflowY = fits ? "hidden" : "auto";
+      if (fits) window.scrollTo(0, 0);
+    });
+  }
+
+  window.addEventListener("resize", updateScrollLock);
+  window.addEventListener("orientationchange", updateScrollLock);
+
   // ---------------- Swipe navigation ----------------
 
   function handleSwipe() {
@@ -883,11 +918,9 @@
     let nextIndex;
     if (diff > 0) {
       // Swipe left: go to next day
-      lastSwipeDirection = "left";
       nextIndex = currentIndex + 1;
     } else {
       // Swipe right: go to previous day
-      lastSwipeDirection = "right";
       nextIndex = currentIndex - 1;
     }
 
@@ -896,25 +929,7 @@
     if (nextIndex < 0) nextIndex = 0;
 
     const nextDay = DAYS[nextIndex];
-    const nextTab = els.dayTabs.querySelector(`button[data-day="${nextDay}"]`);
-    if (nextTab) {
-      // Find setActiveDay function in rendered context and call with swipe source
-      const currentActive = els.dayTabs.querySelector("button.active");
-      const tabs = els.dayTabs.querySelectorAll("button");
-      const panels = els.dayPanels.querySelectorAll(".day-panel");
-
-      tabs.forEach(b => b.classList.toggle("active", b.dataset.day === nextDay));
-      panels.forEach(p => {
-        if (p.dataset.day === nextDay) {
-          p.classList.remove("slide-in-left", "slide-in-right", "active");
-          // Force reflow to restart animation
-          void p.offsetWidth;
-          p.classList.add(lastSwipeDirection === "left" ? "slide-in-left" : "slide-in-right", "active");
-        } else {
-          p.classList.remove("slide-in-left", "slide-in-right", "active");
-        }
-      });
-    }
+    setActiveDay(nextDay);
   }
 
   function initSwipeNavigation() {
@@ -936,6 +951,7 @@
     els.rollInput.value = "";
     els.entryError.classList.remove("show");
     els.rollInput.focus();
+    updateScrollLock();
   }
 
   function showTimetableScreen(student) {
@@ -943,6 +959,7 @@
     renderTimetable(student, schedule);
     els.entryScreen.hidden = true;
     els.timetableScreen.hidden = false;
+    updateScrollLock();
   }
 
   function handleRollSubmit() {

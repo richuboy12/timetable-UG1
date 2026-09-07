@@ -297,8 +297,56 @@
 
   nav.day-tabs button:hover:not(.active) { color: var(--text-primary); transform: rotate(1deg); }
 
-  .day-panel { display: none; }
-  .day-panel.active { display: block; }
+  .day-panel { 
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  
+  .day-panel.active { 
+    display: block;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .day-panel.slide-in-left {
+    display: block;
+    animation: slideInLeft 0.4s ease;
+  }
+
+  .day-panel.slide-in-right {
+    display: block;
+    animation: slideInRight 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(30px) rotate(-0.5deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) rotate(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(-30px) rotate(0.5deg);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0) rotate(0);
+    }
+  }
 
   .class-row {
     display: flex;
@@ -423,6 +471,9 @@
 
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
+    .day-panel, .day-panel.active, .day-panel.slide-in-left, .day-panel.slide-in-right {
+      animation: none !important;
+    }
   }
 
   button:focus-visible, input:focus-visible {
@@ -536,6 +587,7 @@
   // Swipe tracking
   let touchStartX = 0;
   let touchEndX = 0;
+  let lastSwipeDirection = null; // "left" or "right"
 
   // ---------------- CSV loading ----------------
 
@@ -728,7 +780,7 @@
       tab.textContent = day.slice(0, 3);
       tab.dataset.day = day;
       tab.className = day === defaultDay ? "active" : "";
-      tab.addEventListener("click", () => setActiveDay(day));
+      tab.addEventListener("click", () => setActiveDay(day, "click"));
       els.dayTabs.appendChild(tab);
 
       const panel = document.createElement("div");
@@ -750,9 +802,31 @@
       els.dayPanels.appendChild(panel);
     });
 
-    function setActiveDay(day) {
-      els.dayTabs.querySelectorAll("button").forEach(b => b.classList.toggle("active", b.dataset.day === day));
-      els.dayPanels.querySelectorAll(".day-panel").forEach(p => p.classList.toggle("active", p.dataset.day === day));
+    function setActiveDay(day, source = "click") {
+      const tabs = els.dayTabs.querySelectorAll("button");
+      const panels = els.dayPanels.querySelectorAll(".day-panel");
+      const currentActive = els.dayTabs.querySelector("button.active");
+      const currentDay = currentActive ? currentActive.dataset.day : null;
+      const currentIndex = currentDay ? DAYS.indexOf(currentDay) : -1;
+      const nextIndex = DAYS.indexOf(day);
+
+      // Determine animation direction based on swipe or click
+      let animClass = "fadeIn";
+      if (source === "swipe" && lastSwipeDirection) {
+        animClass = lastSwipeDirection === "left" ? "slide-in-left" : "slide-in-right";
+      }
+
+      tabs.forEach(b => b.classList.toggle("active", b.dataset.day === day));
+      panels.forEach(p => {
+        if (p.dataset.day === day) {
+          p.classList.remove("slide-in-left", "slide-in-right", "active");
+          // Force reflow to restart animation
+          void p.offsetWidth;
+          p.classList.add(animClass, "active");
+        } else {
+          p.classList.remove("slide-in-left", "slide-in-right", "active");
+        }
+      });
     }
   }
 
@@ -809,9 +883,11 @@
     let nextIndex;
     if (diff > 0) {
       // Swipe left: go to next day
+      lastSwipeDirection = "left";
       nextIndex = currentIndex + 1;
     } else {
       // Swipe right: go to previous day
+      lastSwipeDirection = "right";
       nextIndex = currentIndex - 1;
     }
 
@@ -822,7 +898,22 @@
     const nextDay = DAYS[nextIndex];
     const nextTab = els.dayTabs.querySelector(`button[data-day="${nextDay}"]`);
     if (nextTab) {
-      nextTab.click();
+      // Find setActiveDay function in rendered context and call with swipe source
+      const currentActive = els.dayTabs.querySelector("button.active");
+      const tabs = els.dayTabs.querySelectorAll("button");
+      const panels = els.dayPanels.querySelectorAll(".day-panel");
+
+      tabs.forEach(b => b.classList.toggle("active", b.dataset.day === nextDay));
+      panels.forEach(p => {
+        if (p.dataset.day === nextDay) {
+          p.classList.remove("slide-in-left", "slide-in-right", "active");
+          // Force reflow to restart animation
+          void p.offsetWidth;
+          p.classList.add(lastSwipeDirection === "left" ? "slide-in-left" : "slide-in-right", "active");
+        } else {
+          p.classList.remove("slide-in-left", "slide-in-right", "active");
+        }
+      });
     }
   }
 

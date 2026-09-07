@@ -482,9 +482,88 @@
     outline: 2px solid var(--accent-blue);
     outline-offset: 2px;
   }
+
+  /* ---------- Domain-change notice (permanent) ---------- */
+  .moved-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(253, 251, 247, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .moved-card {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    background: var(--surface);
+    border: 2px dashed var(--border);
+    border-radius: 28px;
+    padding: 32px 28px 28px;
+    text-align: center;
+    box-shadow: 6px 6px 0px 0px var(--border);
+  }
+
+  .moved-card h2 {
+    font-family: 'Kalam', cursive;
+    font-size: 1.35rem;
+    margin: 0 0 10px;
+    color: var(--text-primary);
+  }
+
+  .moved-card p {
+    font-family: 'Patrick Hand', cursive, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin: 0 0 22px;
+  }
+
+  .moved-card a.moved-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Kalam', cursive;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border: 3px solid var(--border);
+    border-radius: var(--wobbly-pill);
+    box-shadow: 4px 4px 0px 0px var(--border);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .moved-card a.moved-btn:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px 0px var(--border);
+  }
+
+  body.moved-active {
+    overflow: hidden;
+  }
+
+  body.moved-active .app {
+    pointer-events: none;
+    user-select: none;
+  }
 </style>
 </head>
-<body>
+<body class="moved-active">
+
+<!-- Permanent notice: site has moved to a new domain -->
+<div class="moved-overlay" id="moved-overlay" role="dialog" aria-modal="true" aria-labelledby="moved-title">
+  <div class="moved-card">
+    <h2 id="moved-title">We've moved!</h2>
+    <p>Due to high demand on the app, we had to switch domains. Please use the new link below for further use.</p>
+    <a class="moved-btn" id="moved-link" href="https://REPLACE-WITH-NEW-DOMAIN.example" target="_top" rel="noopener">Take me to the new link</a>
+  </div>
+</div>
 
 <div class="app">
 

@@ -531,6 +531,11 @@
 
   let rosterRows = null;
   let timetableRows = null;
+  let currentSchedule = null;
+
+  // Swipe tracking
+  let touchStartX = 0;
+  let touchEndX = 0;
 
   // ---------------- CSV loading ----------------
 
@@ -619,6 +624,39 @@
     return best;
   }
 
+  // Get the first day with remaining classes from today onwards
+  function getFirstDayWithRemainingClasses(schedule) {
+    const now = new Date();
+    const todayName = DAYS[(now.getDay() + 6) % 7] || null; // Mon=0..Sat=5, Sun -> not in DAYS
+    const todayIndex = DAYS.indexOf(todayName);
+
+    // First, check if today has classes with remaining time
+    if (todayIndex >= 0 && schedule.byDay[todayName]) {
+      for (const row of schedule.byDay[todayName]) {
+        if (row._end > now) {
+          return todayName;
+        }
+      }
+    }
+
+    // If not, find the next day with classes
+    for (let i = 1; i < DAYS.length; i++) {
+      const day = DAYS[(todayIndex + i) % DAYS.length];
+      if (schedule.byDay[day].length > 0) {
+        return day;
+      }
+    }
+
+    // Fallback to first day with classes
+    for (const day of DAYS) {
+      if (schedule.byDay[day].length > 0) {
+        return day;
+      }
+    }
+
+    return DAYS[0];
+  }
+
   // ---------------- Core logic ----------------
 
   function findStudent(rollNo) {
@@ -674,6 +712,7 @@
   // ---------------- Rendering ----------------
 
   function renderTimetable(student, schedule) {
+    currentSchedule = schedule;
     els.studentName.textContent = student.name;
     els.studentBatch.textContent = student.batch;
     els.weekLabel.textContent = schedule.weekMonday ? formatWeekLabel(schedule.weekMonday) : "";
@@ -681,13 +720,8 @@
     els.dayTabs.innerHTML = "";
     els.dayPanels.innerHTML = "";
 
-    const now = new Date();
-    const todayName = DAYS[(now.getDay() + 6) % 7] || null; // Mon=0..Sat=5, Sun -> not in DAYS
-
-    let defaultDay = DAYS.find(d => d === todayName && schedule.byDay[d].length > 0);
-    if (!defaultDay) {
-      defaultDay = DAYS.find(d => schedule.byDay[d].length > 0) || DAYS[0];
-    }
+    // Get the default day: first day with remaining classes from today onwards
+    const defaultDay = getFirstDayWithRemainingClasses(schedule);
 
     DAYS.forEach(day => {
       const tab = document.createElement("button");
@@ -757,6 +791,52 @@
     return el;
   }
 
+  // ---------------- Swipe navigation ----------------
+
+  function handleSwipe() {
+    const diff = touchStartX - touchEndX;
+    const threshold = 50; // Minimum swipe distance
+
+    if (Math.abs(diff) < threshold) return;
+
+    // Get current active day
+    const activeTab = els.dayTabs.querySelector("button.active");
+    if (!activeTab) return;
+
+    const currentDay = activeTab.dataset.day;
+    const currentIndex = DAYS.indexOf(currentDay);
+
+    let nextIndex;
+    if (diff > 0) {
+      // Swipe left: go to next day
+      nextIndex = currentIndex + 1;
+    } else {
+      // Swipe right: go to previous day
+      nextIndex = currentIndex - 1;
+    }
+
+    // Clamp to valid range (don't wrap around)
+    if (nextIndex >= DAYS.length) nextIndex = DAYS.length - 1;
+    if (nextIndex < 0) nextIndex = 0;
+
+    const nextDay = DAYS[nextIndex];
+    const nextTab = els.dayTabs.querySelector(`button[data-day="${nextDay}"]`);
+    if (nextTab) {
+      nextTab.click();
+    }
+  }
+
+  function initSwipeNavigation() {
+    els.dayPanels.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    els.dayPanels.addEventListener("touchend", (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, false);
+  }
+
   // ---------------- Screen flow ----------------
 
   function showEntryScreen() {
@@ -811,6 +891,9 @@
       localStorage.removeItem(STORAGE_KEY);
       showEntryScreen();
     });
+
+    // Initialize swipe navigation
+    initSwipeNavigation();
 
     const savedRoll = localStorage.getItem(STORAGE_KEY);
     if (savedRoll) {

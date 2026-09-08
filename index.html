@@ -469,6 +469,15 @@
     border-top: 1px solid var(--muted-bg);
   }
 
+  .version-tag {
+    position: fixed;
+    bottom: 4px;
+    right: 10px;
+    opacity: 0.45;
+    font-size: 11px;
+    z-index: 10;
+  }
+
   [hidden] { display: none !important; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -482,88 +491,9 @@
     outline: 2px solid var(--accent-blue);
     outline-offset: 2px;
   }
-
-  /* ---------- Domain-change notice (permanent) ---------- */
-  .moved-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    background: rgba(253, 251, 247, 0.55);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
-
-  .moved-card {
-    position: relative;
-    width: 100%;
-    max-width: 420px;
-    background: var(--surface);
-    border: 2px dashed var(--border);
-    border-radius: 28px;
-    padding: 32px 28px 28px;
-    text-align: center;
-    box-shadow: 6px 6px 0px 0px var(--border);
-  }
-
-  .moved-card h2 {
-    font-family: 'Kalam', cursive;
-    font-size: 1.35rem;
-    margin: 0 0 10px;
-    color: var(--text-primary);
-  }
-
-  .moved-card p {
-    font-family: 'Patrick Hand', cursive, sans-serif;
-    font-size: 1.05rem;
-    line-height: 1.5;
-    color: var(--text-muted);
-    margin: 0 0 22px;
-  }
-
-  .moved-card a.moved-btn {
-    display: inline-block;
-    padding: 12px 28px;
-    background: var(--accent);
-    color: #fff;
-    text-decoration: none;
-    font-family: 'Kalam', cursive;
-    font-size: 1.05rem;
-    font-weight: 700;
-    border: 3px solid var(--border);
-    border-radius: var(--wobbly-pill);
-    box-shadow: 4px 4px 0px 0px var(--border);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .moved-card a.moved-btn:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0px 0px var(--border);
-  }
-
-  body.moved-active {
-    overflow: hidden;
-  }
-
-  body.moved-active .app {
-    pointer-events: none;
-    user-select: none;
-  }
 </style>
 </head>
-<body class="moved-active">
-
-<!-- Permanent notice: site has moved to a new domain -->
-<div class="moved-overlay" id="moved-overlay" role="dialog" aria-modal="true" aria-labelledby="moved-title">
-  <div class="moved-card">
-    <h2 id="moved-title">We've moved!</h2>
-    <p>Due to high demand on the app, we had to switch domains. Please use the new link below for further use. (CD:21)</p>
-    <a class="moved-btn" id="moved-link" href="https://iiitstimetableug1go.ifree.page/" target="_top" rel="noopener">Take me to the new link</a>
-  </div>
-</div>
+<body>
 
 <div class="app">
 
@@ -605,6 +535,7 @@
 </div>
 
 <div class="made-by">Made by Muhammed Rinshal A</div>
+<div class="version-tag">V1.1</div>
 
 <script>
 (function () {
@@ -637,8 +568,9 @@
   const STORAGE_KEY = "ug1_timetable_roll_no";
 
   // Subject codes resolvable from roster.csv in v1.
-  // EE / EDL are intentionally excluded — no per-student section
-  // data exists for them yet (see architecture doc, "Known gaps").
+  // EE / EDL section numbers aren't confirmed per-student yet, so
+  // (like FHVE) they're marked section: "ALL" in timetable.csv and
+  // shown to every student — see COMMON_SECTION below.
   const SECTIONED_CODES = ["CP", "DLD", "OCW"];
   const DSMA_CODE = "DSMA";
   const COMMON_SECTION = "ALL";
@@ -664,6 +596,7 @@
   let rosterRows = null;
   let timetableRows = null;
   let currentSchedule = null;
+  let currentRollNo = null;
 
   // Swipe tracking
   let touchStartX = 0;
@@ -685,8 +618,8 @@
       .then(text => Papa.parse(text, { header: true, skipEmptyLines: true }).data);
   }
 
-  function loadData() {
-    if (rosterRows && timetableRows) {
+  function loadData(force) {
+    if (!force && rosterRows && timetableRows) {
       return Promise.resolve();
     }
     return Promise.all([fetchCsv("roster.csv"), fetchCsv("timetable.csv")])
@@ -1057,6 +990,7 @@
           els.entryError.classList.add("show");
           return;
         }
+        currentRollNo = rollNo;
         localStorage.setItem(STORAGE_KEY, rollNo);
         showTimetableScreen(student);
       })
@@ -1069,18 +1003,53 @@
       });
   }
 
+  // Re-pulls roster/timetable data (bypassing the in-memory cache) and,
+  // if a timetable is currently on screen, re-renders it in place while
+  // preserving whichever day tab the user has open. The service worker
+  // itself only actually hits the network here if 30+ minutes have
+  // passed since its last successful sync — otherwise this just re-reads
+  // its own cache, so it's cheap to call often.
+  function refreshDataInBackground() {
+    if (els.timetableScreen.hidden || !currentRollNo) return;
+
+    const activeTab = els.dayTabs.querySelector("button.active");
+    const activeDay = activeTab ? activeTab.dataset.day : null;
+
+    loadData(true)
+      .then(() => {
+        const student = findStudent(currentRollNo);
+        if (!student) return;
+        renderTimetable(student, buildScheduleForStudent(student));
+        if (activeDay) setActiveDay(activeDay);
+      })
+      .catch(() => {
+        // Offline or the fetch failed — silently keep showing what's
+        // already on screen.
+      });
+  }
+
   function init() {
     els.rollSubmit.addEventListener("click", handleRollSubmit);
     els.rollInput.addEventListener("keydown", e => {
       if (e.key === "Enter") handleRollSubmit();
     });
     els.changeRollBtn.addEventListener("click", () => {
+      currentRollNo = null;
       localStorage.removeItem(STORAGE_KEY);
       showEntryScreen();
     });
 
     // Initialize swipe navigation
     initSwipeNavigation();
+
+    // Check for fresh data every 30 minutes while the app stays open
+    // (e.g. left running on a home screen). The service worker's own
+    // 30-minute clock means this won't hit the network more often than
+    // that even if called more frequently.
+    setInterval(refreshDataInBackground, 30 * 60 * 1000);
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") refreshDataInBackground();
+    });
 
     const savedRoll = localStorage.getItem(STORAGE_KEY);
     if (savedRoll) {
@@ -1089,6 +1058,7 @@
         .then(() => {
           const student = findStudent(savedRoll);
           if (student) {
+            currentRollNo = savedRoll;
             showTimetableScreen(student);
           } else {
             localStorage.removeItem(STORAGE_KEY);
@@ -1133,8 +1103,22 @@
 
   function initServiceWorker() {
     if (!("serviceWorker" in navigator)) return;
-    navigator.serviceWorker.register("sw.js").catch(() => {
-      // Non-fatal — the site still works without offline/install support.
+
+    navigator.serviceWorker.register("sw.js").then((reg) => {
+      // Every time the app boots, ask the browser to check the host
+      // for a newer sw.js. If the app shell files changed, this is
+      // what pulls the update in (on top of the network-first fetch
+      // strategy inside sw.js itself).
+      reg.update().catch(() => {});
+    }).catch(() => {});
+
+    // If a new service worker takes over mid-session, reload once so
+    // the page is running the fresh shell instead of a stale one.
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (reloaded) return;
+      reloaded = true;
+      window.location.reload();
     });
   }
 

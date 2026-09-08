@@ -85,11 +85,11 @@ week_date,day,start_time,end_time,subject_code,subject_name,section,room,type
 2026-09-07,Tuesday,16:30,17:30,CP,Computer Programming,1,G06,Lecture
 2026-09-07,Tuesday,16:30,17:30,DSMA,Discrete Structures and Matrix Algebra,4,G09,Lecture
 2026-09-07,Tuesday,16:30,17:30,OCW,Overview of Computer Workshop,3,G07,Lecture
-2026-09-07,Wednesday,16:30,17:30,EE,Essential English,2,G08,Lecture
-2026-09-07,Thursday,16:30,17:30,EDL,Ethics in Everyday Life,1,G08,Lecture
-2026-09-07,Friday,16:30,17:30,EE,Essential English,1,G06,Lecture
-2026-09-07,Saturday,16:30,17:30,EDL,Ethics in Everyday Life,2,G04,Lecture
-2026-09-07,Wednesday,17:30,18:30,EE,Essential English,2,G08,Lecture
-2026-09-07,Thursday,17:30,18:30,EDL,Ethics in Everyday Life,1,G08,Lecture
-2026-09-07,Friday,17:30,18:30,EE,Essential English,1,G06,Lecture
-2026-09-07,Saturday,17:30,18:30,EDL,Ethics in Everyday Life,2,G04,Lecture
+2026-09-07,Wednesday,16:30,17:30,EE,Essential English,ALL,G08,Lecture
+2026-09-07,Thursday,16:30,17:30,EDL,Ethics in Everyday Life,ALL,G08,Lecture
+2026-09-07,Friday,16:30,17:30,EE,Essential English,ALL,G06,Lecture
+2026-09-07,Saturday,16:30,17:30,EDL,Ethics in Everyday Life,ALL,G04,Lecture
+2026-09-07,Wednesday,17:30,18:30,EE,Essential English,ALL,G08,Lecture
+2026-09-07,Thursday,17:30,18:30,EDL,Ethics in Everyday Life,ALL,G08,Lecture
+2026-09-07,Friday,17:30,18:30,EE,Essential English,ALL,G06,Lecture
+2026-09-07,Saturday,17:30,18:30,EDL,Ethics in Everyday Life,ALL,G04,Lecture

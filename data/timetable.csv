@@ -79,3 +79,18 @@ week_date,day,start_time,end_time,subject_code,subject_name,section,room,type
 2026-09-07,Tuesday,16:30,17:30,CP,Computer Programming,1,G06,Lecture
 2026-09-07,Tuesday,16:30,17:30,DSMA,Discrete Structures and Matrix Algebra,4,G09,Lecture
 2026-09-07,Tuesday,16:30,17:30,OCW,Overview of Computer Workshop,3,G07,Lecture
+2026-09-11,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,1,G09,Introduction
+2026-09-11,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,2,G08,Introduction
+2026-09-11,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,3,G07,Introduction
+2026-09-11,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,4,G06,Introduction
+2026-09-11,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,5,103,Introduction
+2026-09-12,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,1,G09,Introduction
+2026-09-12,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,2,G08,Introduction
+2026-09-12,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,3,G07,Introduction
+2026-09-12,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,4,B05,Introduction
+2026-09-12,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,5,103,Introduction
+2026-09-13,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,1,G09,Introduction
+2026-09-13,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,2,G08,Introduction
+2026-09-13,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,3,G07,Introduction
+2026-09-13,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,4,G06,Introduction
+2026-09-13,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,5,G05,Introduction

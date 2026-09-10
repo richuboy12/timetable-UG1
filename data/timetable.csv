@@ -1,96 +1,207 @@
-week_date,day,start_time,end_time,subject_code,subject_name,section,room,type
-2026-09-07,Monday,08:45,09:45,OCW,Overview of Computer Workshop,4,G08,Lecture
-2026-09-07,Monday,08:45,09:45,OCW,Overview of Computer Workshop,1,Lab 103,Lab
-2026-09-07,Tuesday,08:45,09:45,CP,Computer Programming,4,Lab 103,Lab
-2026-09-07,Tuesday,08:45,09:45,DLD,Digital Logic Design,1,Lab 114/102,Lab
-2026-09-07,Wednesday,08:45,09:45,CP,Computer Programming,1,Lab 103,Lab
-2026-09-07,Wednesday,08:45,09:45,DLD,Digital Logic Design,4,Lab 114/102,Lab
-2026-09-07,Thursday,08:45,09:45,OCW,Overview of Computer Workshop,4,Lab 103,Lab
-2026-09-07,Thursday,08:45,09:45,OCW,Overview of Computer Workshop,1,G08,Lecture
-2026-09-07,Friday,08:45,09:45,OCW,Overview of Computer Workshop,1,G09,Lecture
-2026-09-07,Monday,09:45,10:45,OCW,Overview of Computer Workshop,1,Lab 103,Lab
-2026-09-07,Monday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,2,G08,Lecture
-2026-09-07,Monday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,3,G07,Lecture
-2026-09-07,Tuesday,09:45,10:45,CP,Computer Programming,4,Lab 103,Lab
-2026-09-07,Tuesday,09:45,10:45,DLD,Digital Logic Design,1,Lab 114/102,Lab
-2026-09-07,Tuesday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,3,G08,Lecture
-2026-09-07,Tuesday,09:45,10:45,OCW,Overview of Computer Workshop,2,G09,Lecture
-2026-09-07,Wednesday,09:45,10:45,CP,Computer Programming,1,Lab 103,Lab
-2026-09-07,Wednesday,09:45,10:45,DLD,Digital Logic Design,4,Lab 114/102,Lab
-2026-09-07,Wednesday,09:45,10:45,DLD,Digital Logic Design,3,G07,Lecture
-2026-09-07,Thursday,09:45,10:45,OCW,Overview of Computer Workshop,4,Lab 103,Lab
-2026-09-07,Thursday,09:45,10:45,CP,Computer Programming,1,G09,Lecture
-2026-09-07,Thursday,09:45,10:45,CP,Computer Programming,3,G07,Lecture
-2026-09-07,Friday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,4,G09,Lecture
-2026-09-07,Friday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,5,G08,Lecture
-2026-09-07,Friday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,2,G07,Lecture
-2026-09-07,Monday,11:00,12:00,DLD,Digital Logic Design,2,G08,Lecture
-2026-09-07,Monday,11:00,12:00,CP,Computer Programming,3,Lab 103,Lab
-2026-09-07,Monday,11:00,12:00,DLD,Digital Logic Design,1,G09,Lecture
-2026-09-07,Tuesday,11:00,12:00,DLD,Digital Logic Design,3,Lab 114/102,Lab
-2026-09-07,Tuesday,11:00,12:00,DLD,Digital Logic Design,2,G08,Lecture
-2026-09-07,Tuesday,11:00,12:00,DLD,Digital Logic Design,4,G09,Lecture
-2026-09-07,Wednesday,11:00,12:00,OCW,Overview of Computer Workshop,1,G09,Lecture
-2026-09-07,Wednesday,11:00,12:00,CP,Computer Programming,2,G08,Lecture
-2026-09-07,Wednesday,11:00,12:00,DLD,Digital Logic Design,4,G04,Lecture
-2026-09-07,Thursday,11:00,12:00,DLD,Digital Logic Design,1,G09,Lecture
-2026-09-07,Thursday,11:00,12:00,CP,Computer Programming,2,Lab 103,Lab
-2026-09-07,Thursday,11:00,12:00,DLD,Digital Logic Design,3,G07,Lecture
-2026-09-07,Friday,11:00,12:00,DLD,Digital Logic Design,3,G08,Lecture
-2026-09-07,Friday,11:00,12:00,OCW,Overview of Computer Workshop,2,G09,Lecture
-2026-09-07,Monday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,4,G07,Lecture
-2026-09-07,Monday,12:00,13:00,CP,Computer Programming,3,Lab 103,Lab
-2026-09-07,Tuesday,12:00,13:00,DLD,Digital Logic Design,3,Lab 114/102,Lab
-2026-09-07,Tuesday,12:00,13:00,OCW,Overview of Computer Workshop,4,G08,Lecture
-2026-09-07,Wednesday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,5,G09,Lecture
-2026-09-07,Wednesday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,3,G07,Lecture
-2026-09-07,Thursday,12:00,13:00,CP,Computer Programming,2,Lab 103,Lab
-2026-09-07,Thursday,12:00,13:00,OCW,Overview of Computer Workshop,4,G08,Lecture
-2026-09-07,Thursday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,1,G09,Lecture
-2026-09-07,Friday,12:00,13:00,CP,Computer Programming,3,G06,Lecture
-2026-09-07,Friday,12:00,13:00,CP,Computer Programming,2,G09,Lecture
-2026-09-07,Friday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,1,G07,Lecture
-2026-09-07,Monday,14:15,15:15,OCW,Overview of Computer Workshop,2,Lab 103,Lab
-2026-09-07,Monday,14:15,15:15,OCW,Overview of Computer Workshop,3,G07,Lecture
-2026-09-07,Monday,14:15,15:15,CP,Computer Programming,1,G08,Lecture
-2026-09-07,Tuesday,14:15,15:15,OCW,Overview of Computer Workshop,3,Lab 103,Lab
-2026-09-07,Tuesday,14:15,15:15,DSMA,Discrete Structures and Matrix Algebra,2,G09,Lecture
-2026-09-07,Tuesday,14:15,15:15,DLD,Digital Logic Design,1,B03,Lecture
-2026-09-07,Wednesday,14:15,15:15,DLD,Digital Logic Design,4,G09,Lecture
-2026-09-07,Thursday,14:15,15:15,OCW,Overview of Computer Workshop,2,B05,Lecture
-2026-09-07,Thursday,14:15,15:15,CP,Computer Programming,4,G08,Lecture
-2026-09-07,Friday,14:15,15:15,CP,Computer Programming,4,G09,Lecture
-2026-09-07,Friday,14:15,15:15,DSMA,Discrete Structures and Matrix Algebra,3,G08,Lecture
-2026-09-07,Friday,14:15,15:15,DLD,Digital Logic Design,2,Lab 114/102,Lab
-2026-09-07,Monday,15:15,16:15,OCW,Overview of Computer Workshop,2,Lab 103,Lab
-2026-09-07,Monday,15:15,16:15,CP,Computer Programming,3,G08,Lecture
-2026-09-07,Tuesday,15:15,16:15,OCW,Overview of Computer Workshop,3,Lab 103,Lab
-2026-09-07,Tuesday,15:15,16:15,CP,Computer Programming,2,G09,Lecture
-2026-09-07,Tuesday,15:15,16:15,CP,Computer Programming,4,B03,Lecture
-2026-09-07,Tuesday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,1,G08,Lecture
-2026-09-07,Wednesday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,4,G09,Lecture
-2026-09-07,Wednesday,15:15,16:15,DLD,Digital Logic Design,2,G08,Lecture
-2026-09-07,Wednesday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,1,G05,Lecture
-2026-09-07,Thursday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,5,G09,Lecture
-2026-09-07,Thursday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,2,G07,Lecture
-2026-09-07,Friday,15:15,16:15,DLD,Digital Logic Design,2,Lab 114/102,Lab
-2026-09-07,Friday,15:15,16:15,OCW,Overview of Computer Workshop,3,G07,Lecture
-2026-09-07,Monday,16:30,17:30,DSMA,Discrete Structures and Matrix Algebra,5,G04,Lecture
-2026-09-07,Tuesday,16:30,17:30,CP,Computer Programming,1,G06,Lecture
-2026-09-07,Tuesday,16:30,17:30,DSMA,Discrete Structures and Matrix Algebra,4,G09,Lecture
-2026-09-07,Tuesday,16:30,17:30,OCW,Overview of Computer Workshop,3,G07,Lecture
-2026-09-07,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,1,G09,Introduction
-2026-09-07,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,2,G08,Introduction
-2026-09-07,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,3,G07,Introduction
-2026-09-07,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,4,G06,Introduction
-2026-09-07,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,5,103,Introduction
-2026-09-07,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,1,G09,Introduction
-2026-09-07,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,2,G08,Introduction
-2026-09-07,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,3,G07,Introduction
-2026-09-07,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,4,B05,Introduction
-2026-09-07,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,5,103,Introduction
-2026-09-07,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,1,G09,Introduction
-2026-09-07,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,2,G08,Introduction
-2026-09-07,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,3,G07,Introduction
-2026-09-07,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,4,G06,Introduction
-2026-09-07,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,5,G05,Introduction
+week_date,year,day,start_time,end_time,subject_code,subject_name,section,room,type
+2026-09-07,UG1,Monday,08:45,09:45,OCW,Overview of Computer Workshop,4,G08,Lecture
+2026-09-07,UG1,Monday,08:45,09:45,OCW,Overview of Computer Workshop,1,Lab 103,Lab
+2026-09-07,UG1,Tuesday,08:45,09:45,CP,Computer Programming,4,Lab 103,Lab
+2026-09-07,UG1,Tuesday,08:45,09:45,DLD,Digital Logic Design,1,Lab 114/102,Lab
+2026-09-07,UG1,Wednesday,08:45,09:45,CP,Computer Programming,1,Lab 103,Lab
+2026-09-07,UG1,Wednesday,08:45,09:45,DLD,Digital Logic Design,4,Lab 114/102,Lab
+2026-09-07,UG1,Thursday,08:45,09:45,OCW,Overview of Computer Workshop,4,Lab 103,Lab
+2026-09-07,UG1,Thursday,08:45,09:45,OCW,Overview of Computer Workshop,1,G08,Lecture
+2026-09-07,UG1,Friday,08:45,09:45,OCW,Overview of Computer Workshop,1,G09,Lecture
+2026-09-07,UG1,Monday,09:45,10:45,OCW,Overview of Computer Workshop,1,Lab 103,Lab
+2026-09-07,UG1,Monday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,2,G08,Lecture
+2026-09-07,UG1,Monday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,3,G07,Lecture
+2026-09-07,UG1,Tuesday,09:45,10:45,CP,Computer Programming,4,Lab 103,Lab
+2026-09-07,UG1,Tuesday,09:45,10:45,DLD,Digital Logic Design,1,Lab 114/102,Lab
+2026-09-07,UG1,Tuesday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,3,G08,Lecture
+2026-09-07,UG1,Tuesday,09:45,10:45,OCW,Overview of Computer Workshop,2,G09,Lecture
+2026-09-07,UG1,Wednesday,09:45,10:45,CP,Computer Programming,1,Lab 103,Lab
+2026-09-07,UG1,Wednesday,09:45,10:45,DLD,Digital Logic Design,4,Lab 114/102,Lab
+2026-09-07,UG1,Wednesday,09:45,10:45,DLD,Digital Logic Design,3,G07,Lecture
+2026-09-07,UG1,Thursday,09:45,10:45,OCW,Overview of Computer Workshop,4,Lab 103,Lab
+2026-09-07,UG1,Thursday,09:45,10:45,CP,Computer Programming,1,G09,Lecture
+2026-09-07,UG1,Thursday,09:45,10:45,CP,Computer Programming,3,G07,Lecture
+2026-09-07,UG1,Friday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,4,G09,Lecture
+2026-09-07,UG1,Friday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,5,G08,Lecture
+2026-09-07,UG1,Friday,09:45,10:45,DSMA,Discrete Structures and Matrix Algebra,2,G07,Lecture
+2026-09-07,UG1,Monday,11:00,12:00,DLD,Digital Logic Design,2,G08,Lecture
+2026-09-07,UG1,Monday,11:00,12:00,CP,Computer Programming,3,Lab 103,Lab
+2026-09-07,UG1,Monday,11:00,12:00,DLD,Digital Logic Design,1,G09,Lecture
+2026-09-07,UG1,Tuesday,11:00,12:00,DLD,Digital Logic Design,3,Lab 114/102,Lab
+2026-09-07,UG1,Tuesday,11:00,12:00,DLD,Digital Logic Design,2,G08,Lecture
+2026-09-07,UG1,Tuesday,11:00,12:00,DLD,Digital Logic Design,4,G09,Lecture
+2026-09-07,UG1,Wednesday,11:00,12:00,OCW,Overview of Computer Workshop,1,G09,Lecture
+2026-09-07,UG1,Wednesday,11:00,12:00,CP,Computer Programming,2,G08,Lecture
+2026-09-07,UG1,Wednesday,11:00,12:00,DLD,Digital Logic Design,4,G04,Lecture
+2026-09-07,UG1,Thursday,11:00,12:00,DLD,Digital Logic Design,1,G09,Lecture
+2026-09-07,UG1,Thursday,11:00,12:00,CP,Computer Programming,2,Lab 103,Lab
+2026-09-07,UG1,Thursday,11:00,12:00,DLD,Digital Logic Design,3,G07,Lecture
+2026-09-07,UG1,Friday,11:00,12:00,DLD,Digital Logic Design,3,G08,Lecture
+2026-09-07,UG1,Friday,11:00,12:00,OCW,Overview of Computer Workshop,2,G09,Lecture
+2026-09-07,UG1,Monday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,4,G07,Lecture
+2026-09-07,UG1,Monday,12:00,13:00,CP,Computer Programming,3,Lab 103,Lab
+2026-09-07,UG1,Tuesday,12:00,13:00,DLD,Digital Logic Design,3,Lab 114/102,Lab
+2026-09-07,UG1,Tuesday,12:00,13:00,OCW,Overview of Computer Workshop,4,G08,Lecture
+2026-09-07,UG1,Wednesday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,5,G09,Lecture
+2026-09-07,UG1,Wednesday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,3,G07,Lecture
+2026-09-07,UG1,Thursday,12:00,13:00,CP,Computer Programming,2,Lab 103,Lab
+2026-09-07,UG1,Thursday,12:00,13:00,OCW,Overview of Computer Workshop,4,G08,Lecture
+2026-09-07,UG1,Thursday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,1,G09,Lecture
+2026-09-07,UG1,Friday,12:00,13:00,CP,Computer Programming,3,G06,Lecture
+2026-09-07,UG1,Friday,12:00,13:00,CP,Computer Programming,2,G09,Lecture
+2026-09-07,UG1,Friday,12:00,13:00,DSMA,Discrete Structures and Matrix Algebra,1,G07,Lecture
+2026-09-07,UG1,Monday,14:15,15:15,OCW,Overview of Computer Workshop,2,Lab 103,Lab
+2026-09-07,UG1,Monday,14:15,15:15,OCW,Overview of Computer Workshop,3,G07,Lecture
+2026-09-07,UG1,Monday,14:15,15:15,CP,Computer Programming,1,G08,Lecture
+2026-09-07,UG1,Tuesday,14:15,15:15,OCW,Overview of Computer Workshop,3,Lab 103,Lab
+2026-09-07,UG1,Tuesday,14:15,15:15,DSMA,Discrete Structures and Matrix Algebra,2,G09,Lecture
+2026-09-07,UG1,Tuesday,14:15,15:15,DLD,Digital Logic Design,1,B03,Lecture
+2026-09-07,UG1,Wednesday,14:15,15:15,DLD,Digital Logic Design,4,G09,Lecture
+2026-09-07,UG1,Thursday,14:15,15:15,OCW,Overview of Computer Workshop,2,B05,Lecture
+2026-09-07,UG1,Thursday,14:15,15:15,CP,Computer Programming,4,G08,Lecture
+2026-09-07,UG1,Friday,14:15,15:15,CP,Computer Programming,4,G09,Lecture
+2026-09-07,UG1,Friday,14:15,15:15,DSMA,Discrete Structures and Matrix Algebra,3,G08,Lecture
+2026-09-07,UG1,Friday,14:15,15:15,DLD,Digital Logic Design,2,Lab 114/102,Lab
+2026-09-07,UG1,Monday,15:15,16:15,OCW,Overview of Computer Workshop,2,Lab 103,Lab
+2026-09-07,UG1,Monday,15:15,16:15,CP,Computer Programming,3,G08,Lecture
+2026-09-07,UG1,Tuesday,15:15,16:15,OCW,Overview of Computer Workshop,3,Lab 103,Lab
+2026-09-07,UG1,Tuesday,15:15,16:15,CP,Computer Programming,2,G09,Lecture
+2026-09-07,UG1,Tuesday,15:15,16:15,CP,Computer Programming,4,B03,Lecture
+2026-09-07,UG1,Tuesday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,1,G08,Lecture
+2026-09-07,UG1,Wednesday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,4,G09,Lecture
+2026-09-07,UG1,Wednesday,15:15,16:15,DLD,Digital Logic Design,2,G08,Lecture
+2026-09-07,UG1,Wednesday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,1,G05,Lecture
+2026-09-07,UG1,Thursday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,5,G09,Lecture
+2026-09-07,UG1,Thursday,15:15,16:15,DSMA,Discrete Structures and Matrix Algebra,2,G07,Lecture
+2026-09-07,UG1,Friday,15:15,16:15,DLD,Digital Logic Design,2,Lab 114/102,Lab
+2026-09-07,UG1,Friday,15:15,16:15,OCW,Overview of Computer Workshop,3,G07,Lecture
+2026-09-07,UG1,Monday,16:30,17:30,DSMA,Discrete Structures and Matrix Algebra,5,G04,Lecture
+2026-09-07,UG1,Tuesday,16:30,17:30,CP,Computer Programming,1,G06,Lecture
+2026-09-07,UG1,Tuesday,16:30,17:30,DSMA,Discrete Structures and Matrix Algebra,4,G09,Lecture
+2026-09-07,UG1,Tuesday,16:30,17:30,OCW,Overview of Computer Workshop,3,G07,Lecture
+2026-09-07,UG1,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,1,G09,Introduction
+2026-09-07,UG1,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,2,G08,Introduction
+2026-09-07,UG1,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,3,G07,Introduction
+2026-09-07,UG1,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,4,G06,Introduction
+2026-09-07,UG1,Friday,16:30,18:30,FHVE,Foundations in Human Values and Ethics,5,103,Introduction
+2026-09-07,UG1,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,1,G09,Introduction
+2026-09-07,UG1,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,2,G08,Introduction
+2026-09-07,UG1,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,3,G07,Introduction
+2026-09-07,UG1,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,4,B05,Introduction
+2026-09-07,UG1,Saturday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,5,103,Introduction
+2026-09-07,UG1,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,1,G09,Introduction
+2026-09-07,UG1,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,2,G08,Introduction
+2026-09-07,UG1,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,3,G07,Introduction
+2026-09-07,UG1,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,4,G06,Introduction
+2026-09-07,UG1,Sunday,11:30,13:30,FHVE,Foundations in Human Values and Ethics,5,G05,Introduction
+2026-09-07,UG2,Monday,08:45,09:45,PC,Professional Communication,2,B05,Lecture
+2026-09-07,UG2,Monday,08:45,09:45,OOP,Object Oriented Programming,4,G05,Lecture
+2026-09-07,UG2,Monday,08:45,09:45,RANAC,"Real Analysis, Numerical Analysis and Calculus",1,G06,Lecture
+2026-09-07,UG2,Tuesday,08:45,09:45,PC,Professional Communication,1,B05,Lecture
+2026-09-07,UG2,Tuesday,08:45,09:45,RANAC,"Real Analysis, Numerical Analysis and Calculus",3,G05,Lecture
+2026-09-07,UG2,Tuesday,08:45,09:45,CNA,Circuits and Network Analysis,,G06,Lecture
+2026-09-07,UG2,Wednesday,08:45,09:45,ADSA,Advanced Data Structure and Algorithms,2,G04,Lecture
+2026-09-07,UG2,Wednesday,08:45,09:45,CS,Control Systems,,G05,Lecture
+2026-09-07,UG2,Wednesday,08:45,09:45,DBMS,Database Management Systems,3,G06,Lecture
+2026-09-07,UG2,Thursday,08:45,09:45,RANAC,"Real Analysis, Numerical Analysis and Calculus",1,G09,Lecture
+2026-09-07,UG2,Thursday,08:45,09:45,RANAC,"Real Analysis, Numerical Analysis and Calculus",4,G06,Lecture
+2026-09-07,UG2,Thursday,08:45,09:45,PC,Professional Communication,3,G07,Lecture
+2026-09-07,UG2,Friday,08:45,09:45,RANAC,"Real Analysis, Numerical Analysis and Calculus",3,G05,Lecture
+2026-09-07,UG2,Friday,08:45,09:45,PC,Professional Communication,4,Lab B05,Lab
+2026-09-07,UG2,Friday,08:45,09:45,ADSA,Advanced Data Structure and Algorithms,1,LAB 103,Lab
+2026-09-07,UG2,Monday,09:45,10:45,RANAC,"Real Analysis, Numerical Analysis and Calculus",2,G04,Lecture
+2026-09-07,UG2,Monday,09:45,10:45,CS,Control Systems,,B03,Lecture
+2026-09-07,UG2,Monday,09:45,10:45,ADSA,Advanced Data Structure and Algorithms,1,G06,Lecture
+2026-09-07,UG2,Tuesday,09:45,10:45,OOP,Object Oriented Programming,1,G04,Lecture
+2026-09-07,UG2,Tuesday,09:45,10:45,CS,Control Systems,,G05,Lecture
+2026-09-07,UG2,Wednesday,09:45,10:45,ML,Machine Learning,,108,Lecture
+2026-09-07,UG2,Wednesday,09:45,10:45,PC,Professional Communication,4,B05,Lecture
+2026-09-07,UG2,Wednesday,09:45,10:45,OS,Operating System,2,G05,Lecture
+2026-09-07,UG2,Friday,09:45,10:45,ADSA,Advanced Data Structure and Algorithms,1,LAB 103,Lab
+2026-09-07,UG2,Friday,09:45,10:45,PC,Professional Communication,4,Lab B05,Lab
+2026-09-07,UG2,Friday,09:45,10:45,OS,Operating System,3,B04,Lecture
+2026-09-07,UG2,Thursday,09:45,10:45,CNA,Circuits and Network Analysis,,G06,Lecture
+2026-09-07,UG2,Thursday,09:45,10:45,OOP,Object Oriented Programming,2,G08,Lecture
+2026-09-07,UG2,Tuesday,11:00,12:00,OOP,Object Oriented Programming,3,Lab 103,Lab
+2026-09-07,UG2,Tuesday,11:00,12:00,DBMS,Database Management Systems,1,G04,Lecture
+2026-09-07,UG2,Tuesday,11:00,12:00,OOP,Object Oriented Programming,2,G05,Lecture
+2026-09-07,UG2,Wednesday,11:00,12:00,ADSA,Advanced Data Structure and Algorithms,1,G06,Lecture
+2026-09-07,UG2,Wednesday,11:00,12:00,ADSA,Advanced Data Structure and Algorithms,3,LAB 103,Lab
+2026-09-07,UG2,Wednesday,11:00,12:00,RANAC,"Real Analysis, Numerical Analysis and Calculus",4,G07,Lecture
+2026-09-07,UG2,Monday,11:00,12:00,OS,Operating System,2,B03,Lecture
+2026-09-07,UG2,Monday,11:00,12:00,DBMS,Database Management Systems,1,G05,Lecture
+2026-09-07,UG2,Monday,11:00,12:00,CNA,Circuits and Network Analysis,,G06,Lecture
+2026-09-07,UG2,Monday,11:00,12:00,DBMS,Database Management Systems,3,G07,Lecture
+2026-09-07,UG2,Thursday,11:00,12:00,DBMS,Database Management Systems,1,G06,Lecture
+2026-09-07,UG2,Thursday,11:00,12:00,CNA,Circuits and Network Analysis,,Lab 114/102,Lab
+2026-09-07,UG2,Thursday,11:00,12:00,RANAC,"Real Analysis, Numerical Analysis and Calculus",3,G05,Lecture
+2026-09-07,UG2,Friday,11:00,12:00,DBMS,Database Management Systems,2,G06,Lecture
+2026-09-07,UG2,Friday,11:00,12:00,OS,Operating System,1,G07,Lecture
+2026-09-07,UG2,Friday,11:00,12:00,ES,Embedded Systems,,B03,Lecture
+2026-09-07,UG2,Thursday,12:00,13:00,CNA,Circuits and Network Analysis,,Lab 114/102,Lab
+2026-09-07,UG2,Thursday,12:00,13:00,OS,Operating System,1,G04,Lecture
+2026-09-07,UG2,Thursday,12:00,13:00,OS,Operating System,2,G05,Lecture
+2026-09-07,UG2,Thursday,12:00,13:00,ML,Machine Learning,,111,Lecture
+2026-09-07,UG2,Monday,12:00,13:00,OS,Operating System,1,G04,Lecture
+2026-09-07,UG2,Monday,12:00,13:00,OS,Operating System,3,G06,Lecture
+2026-09-07,UG2,Monday,12:00,13:00,ML,Machine Learning,,109,Lecture
+2026-09-07,UG2,Tuesday,12:00,13:00,OOP,Object Oriented Programming,3,Lab 103,Lab
+2026-09-07,UG2,Tuesday,12:00,13:00,PC,Professional Communication,4,G04,Lecture
+2026-09-07,UG2,Tuesday,12:00,13:00,RANAC,"Real Analysis, Numerical Analysis and Calculus",2,G06,Lecture
+2026-09-07,UG2,Wednesday,12:00,13:00,OOP,Object Oriented Programming,1,G04,Lecture
+2026-09-07,UG2,Wednesday,12:00,13:00,ADSA,Advanced Data Structure and Algorithms,3,LAB 103,Lab
+2026-09-07,UG2,Friday,12:00,13:00,PC,Professional Communication,2,B04,Lecture
+2026-09-07,UG2,Friday,12:00,13:00,ADSA,Advanced Data Structure and Algorithms,3,G08,Lecture
+2026-09-07,UG2,Wednesday,14:15,15:15,OOP,Object Oriented Programming,4,G08,Lecture
+2026-09-07,UG2,Wednesday,14:15,15:15,OOP,Object Oriented Programming,3,G06,Lecture
+2026-09-07,UG2,Wednesday,14:15,15:15,OOP,Object Oriented Programming,1,Lab 103,Lab
+2026-09-07,UG2,Monday,14:15,15:15,DBMS,Database Management Systems,2,G04,Lecture
+2026-09-07,UG2,Monday,14:15,15:15,ADSA,Advanced Data Structure and Algorithms,3,G05,Lecture
+2026-09-07,UG2,Monday,14:15,15:15,RANAC,"Real Analysis, Numerical Analysis and Calculus",4,G09,Lecture
+2026-09-07,UG2,Tuesday,14:15,15:15,OS,Operating System,1,G04,Lecture
+2026-09-07,UG2,Tuesday,14:15,15:15,OS,Operating System,2,G05,Lecture
+2026-09-07,UG2,Tuesday,14:15,15:15,OS,Operating System,3,G06,Lecture
+2026-09-07,UG2,Tuesday,14:15,15:15,ML,Machine Learning,,108,Lecture
+2026-09-07,UG2,Thursday,14:15,15:15,OOP,Object Oriented Programming,4,Lab 103,Lab
+2026-09-07,UG2,Thursday,14:15,15:15,OOP,Object Oriented Programming,3,G05,Lecture
+2026-09-07,UG2,Friday,14:15,15:15,RANAC,"Real Analysis, Numerical Analysis and Calculus",1,G04,Lecture
+2026-09-07,UG2,Friday,14:15,15:15,ES,Embedded Systems,,G06,Lecture
+2026-09-07,UG2,Friday,14:15,15:15,ADSA,Advanced Data Structure and Algorithms,2,G07,Lecture
+2026-09-07,UG2,Tuesday,15:15,16:15,ADSA,Advanced Data Structure and Algorithms,1,G04,Lecture
+2026-09-07,UG2,Tuesday,15:15,16:15,ES,Embedded Systems,,LAB 114/102,Lab
+2026-09-07,UG2,Tuesday,15:15,16:15,ADSA,Advanced Data Structure and Algorithms,3,G05,Lecture
+2026-09-07,UG2,Tuesday,15:15,16:15,DBMS,Database Management Systems,2,G06,Lecture
+2026-09-07,UG2,Wednesday,15:15,16:15,RANAC,"Real Analysis, Numerical Analysis and Calculus",2,G04,Lecture
+2026-09-07,UG2,Wednesday,15:15,16:15,OOP,Object Oriented Programming,1,Lab 103,Lab
+2026-09-07,UG2,Wednesday,15:15,16:15,ES,Embedded Systems,,G07,Lecture
+2026-09-07,UG2,Thursday,15:15,16:15,PC,Professional Communication,1,B05,Lecture
+2026-09-07,UG2,Thursday,15:15,16:15,OS,Operating System,3,G08,Lecture
+2026-09-07,UG2,Thursday,15:15,16:15,RANAC,"Real Analysis, Numerical Analysis and Calculus",2,G04,Lecture
+2026-09-07,UG2,Thursday,15:15,16:15,OOP,Object Oriented Programming,4,Lab 103,Lab
+2026-09-07,UG2,Friday,15:15,16:15,DBMS,Database Management Systems,1,LAB 103,Lab
+2026-09-07,UG2,Friday,15:15,16:15,OOP,Object Oriented Programming,3,G05,Lecture
+2026-09-07,UG2,Friday,15:15,16:15,OOP,Object Oriented Programming,2,G06,Lecture
+2026-09-07,UG2,Friday,15:15,16:15,RANAC,"Real Analysis, Numerical Analysis and Calculus",4,G04,Lecture
+2026-09-07,UG2,Monday,15:15,16:15,RANAC,"Real Analysis, Numerical Analysis and Calculus",3,G04,Lecture
+2026-09-07,UG2,Monday,15:15,16:15,ADSA,Advanced Data Structure and Algorithms,2,G05,Lecture
+2026-09-07,UG2,Monday,15:15,16:15,OOP,Object Oriented Programming,4,G07,Lecture
+2026-09-07,UG2,Tuesday,16:30,17:30,RANAC,"Real Analysis, Numerical Analysis and Calculus",1,G08,Lecture
+2026-09-07,UG2,Tuesday,16:30,17:30,ES,Embedded Systems,,LAB 114/102,Lab
+2026-09-07,UG2,Tuesday,16:30,17:30,PC,Professional Communication,3,B05,Lecture
+2026-09-07,UG2,Wednesday,16:30,17:30,DBMS,Database Management Systems,3,LAB 103,Lab
+2026-09-07,UG2,Wednesday,16:30,17:30,PC,Professional Communication,1,Lab B05,Lab
+2026-09-07,UG2,Monday,16:30,17:30,OOP,Object Oriented Programming,2,Lab 103,Lab
+2026-09-07,UG2,Monday,16:30,17:30,PC,Professional Communication,3,Lab B05,Lab
+2026-09-07,UG2,Thursday,16:30,17:30,DBMS,Database Management Systems,2,LAB 103,Lab
+2026-09-07,UG2,Thursday,16:30,17:30,CS,Control Systems,,G09,Lecture
+2026-09-07,UG2,Thursday,16:30,17:30,DBMS,Database Management Systems,3,G06,Lecture
+2026-09-07,UG2,Friday,16:30,17:30,DBMS,Database Management Systems,1,LAB 103,Lab
+2026-09-07,UG2,Friday,16:30,17:30,PC,Professional Communication,2,Lab B05,Lab
+2026-09-07,UG2,Tuesday,17:30,18:30,ADSA,Advanced Data Structure and Algorithms,2,Lab 103,Lab
+2026-09-07,UG2,Thursday,17:30,18:30,OOP,Object Oriented Programming,1,G04,Lecture
+2026-09-07,UG2,Thursday,17:30,18:30,DBMS,Database Management Systems,2,LAB 103,Lab
+2026-09-07,UG2,Monday,17:30,18:30,PC,Professional Communication,3,Lab B05,Lab
+2026-09-07,UG2,Monday,17:30,18:30,OOP,Object Oriented Programming,2,Lab 103,Lab
+2026-09-07,UG2,Wednesday,17:30,18:30,DBMS,Database Management Systems,3,LAB 103,Lab
+2026-09-07,UG2,Wednesday,17:30,18:30,PC,Professional Communication,1,Lab B05,Lab
+2026-09-07,UG2,Friday,17:30,18:30,PC,Professional Communication,2,Lab B05,Lab

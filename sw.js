@@ -1,4 +1,4 @@
-const CACHE_NAME = "ug1-timetable-v3";
+const CACHE_NAME = "ug1-timetable-v1";
 
 const APP_SHELL = [
   "./",

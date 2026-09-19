@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UG1 Timetable — IIIT Sri City</title>
+<script>
+  (function () {
+    try {
+      if (localStorage.getItem("ug1_timetable_theme") === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    } catch (e) {}
+  })();
+</script>
 
 <!-- Favicon / tab icon -->
 <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
@@ -40,7 +49,31 @@
     --wobbly-pill: 30px 200px 30px 200px / 200px 30px 200px 30px;
   }
 
+  html[data-theme="dark"] {
+    --bg: #17171b;
+    --surface: #232328;
+    --border: #cfcfd6;
+    --text-primary: #ececee;
+    --text-muted: rgba(236, 236, 238, 0.6);
+    --accent: #ff6b6b;
+    --accent-blue: #6d9fe8;
+    --muted-bg: #2b2b31;
+    --postit: #4a4320;
+  }
+
+  html[data-theme="dark"] button#roll-submit,
+  html[data-theme="dark"] .install-btn {
+    background: var(--surface);
+  }
+
+  html[data-theme="dark"] button#roll-submit:hover {
+    background: var(--accent);
+    color: #17171b;
+  }
+
   * { box-sizing: border-box; }
+
+  html, body { transition: background-color 0.15s ease, color 0.15s ease; }
 
   html, body {
     margin: 0;
@@ -469,15 +502,6 @@
     border-top: 1px solid var(--muted-bg);
   }
 
-  .version-tag {
-    position: fixed;
-    bottom: 4px;
-    right: 10px;
-    opacity: 0.45;
-    font-size: 11px;
-    z-index: 10;
-  }
-
   [hidden] { display: none !important; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -491,9 +515,36 @@
     outline: 2px solid var(--accent-blue);
     outline-offset: 2px;
   }
+
+  /* ---------- Theme toggle ---------- */
+
+  .theme-toggle {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+    color: var(--text-muted);
+    cursor: pointer;
+    opacity: 0.4;
+    z-index: 100;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+  }
+  .theme-toggle:hover { opacity: 0.9; transform: scale(1.05); }
+  .theme-toggle:active { transform: scale(0.95); }
+  .theme-toggle svg { width: 14px; height: 14px; display: block; }
 </style>
 </head>
 <body>
+
+<button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode"></button>
 
 <div class="app">
 
@@ -535,7 +586,6 @@
 </div>
 
 <div class="made-by">Made by Muhammed Rinshal A</div>
-<div class="version-tag">V1.1</div>
 
 <script>
 (function () {
@@ -567,13 +617,15 @@
 
   const STORAGE_KEY = "ug1_timetable_roll_no";
 
-  // Subject codes resolvable from roster.csv in v1.
-  // EE / EDL section numbers aren't confirmed per-student yet, so
-  // (like FHVE) they're marked section: "ALL" in timetable.csv and
-  // shown to every student — see COMMON_SECTION below.
+  // Subject codes resolvable from roster.csv.
   const SECTIONED_CODES = ["CP", "DLD", "OCW"];
   const DSMA_CODE = "DSMA";
+  // EE and EDL are mutually exclusive electives — a student is enrolled in
+  // exactly one of the two, in one of two sections, per roster.csv's
+  // ee_edl_subject / ee_edl_section columns.
+  const EE_EDL_CODES = ["EE", "EDL"];
   const COMMON_SECTION = "ALL";
+  const SEMESTER_LABEL = "M26";
 
   const els = {
     entryScreen: document.getElementById("entry-screen"),
@@ -590,13 +642,13 @@
     dayTabs: document.getElementById("day-tabs"),
     dayPanels: document.getElementById("day-panels"),
     appFooter: document.getElementById("app-footer"),
-    installBtn: document.getElementById("install-btn")
+    installBtn: document.getElementById("install-btn"),
+    themeToggle: document.getElementById("theme-toggle")
   };
 
   let rosterRows = null;
   let timetableRows = null;
   let currentSchedule = null;
-  let currentRollNo = null;
 
   // Swipe tracking
   let touchStartX = 0;
@@ -618,8 +670,8 @@
       .then(text => Papa.parse(text, { header: true, skipEmptyLines: true }).data);
   }
 
-  function loadData(force) {
-    if (!force && rosterRows && timetableRows) {
+  function loadData() {
+    if (rosterRows && timetableRows) {
       return Promise.resolve();
     }
     return Promise.all([fetchCsv("roster.csv"), fetchCsv("timetable.csv")])
@@ -630,11 +682,6 @@
   }
 
   // ---------------- Date helpers ----------------
-
-  function parseISODate(str) {
-    const [y, m, d] = str.split("-").map(Number);
-    return new Date(y, m - 1, d);
-  }
 
   function addDays(date, n) {
     const d = new Date(date);
@@ -649,13 +696,6 @@
     return d;
   }
 
-  function formatWeekLabel(mondayDate) {
-    const opts = { day: "numeric", month: "short" };
-    const start = mondayDate.toLocaleDateString("en-GB", opts);
-    const end = addDays(mondayDate, 5).toLocaleDateString("en-GB", opts);
-    return `${start} – ${end}`;
-  }
-
   // Convert 24-hour time to 12-hour format with AM/PM
   function format12HourTime(hhmm) {
     const [h, m] = hhmm.split(":").map(Number);
@@ -665,29 +705,19 @@
     return `${hour12}:${minutes}${period}`;
   }
 
-  // Picks the most recent week_date that is on or before today.
-  function selectCurrentWeek(rows) {
+  // The timetable is day-of-week based (no calendar dates), so "next
+  // class" comparisons need a real Date to sort against. This returns
+  // the date of the next upcoming occurrence of a given weekday —
+  // today itself if today is that weekday, otherwise the soonest one
+  // ahead (never in the past, wraps to next week at most 6 days out).
+  function nextOccurrenceOf(dayName) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    let best = null;
-    for (const row of rows) {
-      if (!row.week_date) continue;
-      const wd = parseISODate(row.week_date);
-      if (wd <= today && (!best || wd > best)) {
-        best = wd;
-      }
-    }
-    // If every stored week is in the future, fall back to the earliest one
-    // so the site still shows something rather than a blank state.
-    if (!best) {
-      for (const row of rows) {
-        if (!row.week_date) continue;
-        const wd = parseISODate(row.week_date);
-        if (!best || wd < best) best = wd;
-      }
-    }
-    return best;
+    const todayIndex = (today.getDay() + 6) % 7; // Mon=0..Sun=6
+    const dayIndex = DAYS.indexOf(dayName);
+    if (dayIndex < 0) return today;
+    const diff = (dayIndex - todayIndex + 7) % 7;
+    return addDays(today, diff);
   }
 
   // Get the first day with remaining classes from today onwards
@@ -731,14 +761,8 @@
   }
 
   function buildScheduleForStudent(student) {
-    const weekMonday = selectCurrentWeek(timetableRows);
-    const weekDateStr = weekMonday
-      ? `${weekMonday.getFullYear()}-${String(weekMonday.getMonth() + 1).padStart(2, "0")}-${String(weekMonday.getDate()).padStart(2, "0")}`
-      : null;
-
     const relevant = timetableRows.filter(row => {
-      if (!row.week_date || row.week_date !== weekDateStr) return false;
-      if (!row.subject_code) return false;
+      if (!row.subject_code || !row.day) return false;
 
       if (row.section === COMMON_SECTION) return true;
       if (SECTIONED_CODES.includes(row.subject_code)) {
@@ -747,13 +771,17 @@
       if (row.subject_code === DSMA_CODE) {
         return row.section === student.dsma_section;
       }
-      return false; // e.g. EE/EDL — excluded in v1, no roster mapping
+      if (EE_EDL_CODES.includes(row.subject_code)) {
+        return row.subject_code === student.ee_edl_subject &&
+               row.section === student.ee_edl_section;
+      }
+      return false;
     });
 
-    // Attach a real Date for sorting + "next class" comparison.
+    // Attach a real Date for sorting + "next class" comparison, based on
+    // the next upcoming occurrence of each row's weekday.
     relevant.forEach(row => {
-      const dayIndex = DAYS.indexOf(row.day);
-      const dayDate = dayIndex >= 0 ? addDays(weekMonday, dayIndex) : weekMonday;
+      const dayDate = nextOccurrenceOf(row.day);
       row._start = combineDateAndTime(dayDate, row.start_time);
       row._end = combineDateAndTime(dayDate, row.end_time);
     });
@@ -772,7 +800,7 @@
       if (row._end > now) { nextClass = row; break; }
     }
 
-    return { weekMonday, byDay, nextClass };
+    return { byDay, nextClass };
   }
 
   // ---------------- Rendering ----------------
@@ -815,7 +843,7 @@
     currentSchedule = schedule;
     els.studentName.textContent = student.name;
     els.studentBatch.textContent = student.batch;
-    els.weekLabel.textContent = schedule.weekMonday ? formatWeekLabel(schedule.weekMonday) : "";
+    els.weekLabel.textContent = SEMESTER_LABEL;
 
     els.dayTabs.innerHTML = "";
     els.dayPanels.innerHTML = "";
@@ -858,9 +886,6 @@
     el.className = "class-row" + (isNext ? " is-next" : "");
 
     const isSaturday = day === "Saturday";
-    const isHVE = (row.subject_name || "").toLowerCase().includes("foundation in human values") || 
-                  (row.subject_code || "").toLowerCase().includes("hve");
-
     const time = document.createElement("div");
     time.className = "class-time" + (isSaturday ? " hidden" : "");
     time.textContent = `${format12HourTime(row.start_time)}–${format12HourTime(row.end_time)}`;
@@ -990,7 +1015,6 @@
           els.entryError.classList.add("show");
           return;
         }
-        currentRollNo = rollNo;
         localStorage.setItem(STORAGE_KEY, rollNo);
         showTimetableScreen(student);
       })
@@ -1003,53 +1027,18 @@
       });
   }
 
-  // Re-pulls roster/timetable data (bypassing the in-memory cache) and,
-  // if a timetable is currently on screen, re-renders it in place while
-  // preserving whichever day tab the user has open. The service worker
-  // itself only actually hits the network here if 30+ minutes have
-  // passed since its last successful sync — otherwise this just re-reads
-  // its own cache, so it's cheap to call often.
-  function refreshDataInBackground() {
-    if (els.timetableScreen.hidden || !currentRollNo) return;
-
-    const activeTab = els.dayTabs.querySelector("button.active");
-    const activeDay = activeTab ? activeTab.dataset.day : null;
-
-    loadData(true)
-      .then(() => {
-        const student = findStudent(currentRollNo);
-        if (!student) return;
-        renderTimetable(student, buildScheduleForStudent(student));
-        if (activeDay) setActiveDay(activeDay);
-      })
-      .catch(() => {
-        // Offline or the fetch failed — silently keep showing what's
-        // already on screen.
-      });
-  }
-
   function init() {
     els.rollSubmit.addEventListener("click", handleRollSubmit);
     els.rollInput.addEventListener("keydown", e => {
       if (e.key === "Enter") handleRollSubmit();
     });
     els.changeRollBtn.addEventListener("click", () => {
-      currentRollNo = null;
       localStorage.removeItem(STORAGE_KEY);
       showEntryScreen();
     });
 
     // Initialize swipe navigation
     initSwipeNavigation();
-
-    // Check for fresh data every 30 minutes while the app stays open
-    // (e.g. left running on a home screen). The service worker's own
-    // 30-minute clock means this won't hit the network more often than
-    // that even if called more frequently.
-    setInterval(refreshDataInBackground, 30 * 60 * 1000);
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") refreshDataInBackground();
-    });
 
     const savedRoll = localStorage.getItem(STORAGE_KEY);
     if (savedRoll) {
@@ -1058,7 +1047,6 @@
         .then(() => {
           const student = findStudent(savedRoll);
           if (student) {
-            currentRollNo = savedRoll;
             showTimetableScreen(student);
           } else {
             localStorage.removeItem(STORAGE_KEY);
@@ -1103,28 +1091,40 @@
 
   function initServiceWorker() {
     if (!("serviceWorker" in navigator)) return;
+    navigator.serviceWorker.register("sw.js").catch(() => {
+      // Non-fatal — the site still works without offline/install support.
+    });
+  }
 
-    navigator.serviceWorker.register("sw.js").then((reg) => {
-      // Every time the app boots, ask the browser to check the host
-      // for a newer sw.js. If the app shell files changed, this is
-      // what pulls the update in (on top of the network-first fetch
-      // strategy inside sw.js itself).
-      reg.update().catch(() => {});
-    }).catch(() => {});
+  // ---------------- Theme (light default, dark optional) ----------------
 
-    // If a new service worker takes over mid-session, reload once so
-    // the page is running the fresh shell instead of a stale one.
-    let reloaded = false;
-    navigator.serviceWorker.addEventListener("controllerchange", () => {
-      if (reloaded) return;
-      reloaded = true;
-      window.location.reload();
+  const THEME_KEY = "ug1_timetable_theme";
+  const MOON_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+  const SUN_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"></line><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"></line><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"></line></svg>';
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    if (els.themeToggle) els.themeToggle.innerHTML = theme === "dark" ? SUN_ICON : MOON_ICON;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", theme === "dark" ? "#17171b" : "#fdfbf7");
+  }
+
+  function initTheme() {
+    if (!els.themeToggle) return;
+    const saved = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    applyTheme(saved);
+    els.themeToggle.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      const next = current === "dark" ? "light" : "dark";
+      try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+      applyTheme(next);
     });
   }
 
   init();
   initInstallPrompt();
   initServiceWorker();
+  initTheme();
 })();
 </script>
 

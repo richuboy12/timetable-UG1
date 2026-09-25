@@ -1,0 +1,433 @@
+day,start_time,end_time,room,status,occupying_class
+Monday,08:45,09:45,G01,Vacant,
+Monday,08:45,09:45,G02,Vacant,
+Monday,08:45,09:45,G03,Vacant,
+Monday,08:45,09:45,G04,Vacant,
+Monday,08:45,09:45,G05,Occupied,OOP4 G05
+Monday,08:45,09:45,G06,Occupied,RANAC1 G06
+Monday,08:45,09:45,G07,Vacant,
+Monday,08:45,09:45,G08,Occupied,OCW4 G08
+Monday,08:45,09:45,G09,Vacant,
+Tuesday,08:45,09:45,G01,Vacant,
+Tuesday,08:45,09:45,G02,Vacant,
+Tuesday,08:45,09:45,G03,Vacant,
+Tuesday,08:45,09:45,G04,Vacant,
+Tuesday,08:45,09:45,G05,Occupied,RANAC3 G05
+Tuesday,08:45,09:45,G06,Occupied,CNA G06
+Tuesday,08:45,09:45,G07,Vacant,
+Tuesday,08:45,09:45,G08,Vacant,
+Tuesday,08:45,09:45,G09,Vacant,
+Wednesday,08:45,09:45,G01,Vacant,
+Wednesday,08:45,09:45,G02,Vacant,
+Wednesday,08:45,09:45,G03,Vacant,
+Wednesday,08:45,09:45,G04,Occupied,ADSA2 G04
+Wednesday,08:45,09:45,G05,Occupied,CS G05
+Wednesday,08:45,09:45,G06,Occupied,DBMS3 G06
+Wednesday,08:45,09:45,G07,Vacant,
+Wednesday,08:45,09:45,G08,Vacant,
+Wednesday,08:45,09:45,G09,Vacant,
+Thursday,08:45,09:45,G01,Vacant,
+Thursday,08:45,09:45,G02,Vacant,
+Thursday,08:45,09:45,G03,Vacant,
+Thursday,08:45,09:45,G04,Vacant,
+Thursday,08:45,09:45,G05,Vacant,
+Thursday,08:45,09:45,G06,Occupied,RANAC4 G06
+Thursday,08:45,09:45,G07,Occupied,PC3 G07
+Thursday,08:45,09:45,G08,Occupied,OCW1 G08
+Thursday,08:45,09:45,G09,Occupied,RANAC1 G09
+Friday,08:45,09:45,G01,Vacant,
+Friday,08:45,09:45,G02,Vacant,
+Friday,08:45,09:45,G03,Vacant,
+Friday,08:45,09:45,G04,Vacant,
+Friday,08:45,09:45,G05,Occupied,RANAC3 G05
+Friday,08:45,09:45,G06,Occupied,DSP G06
+Friday,08:45,09:45,G07,Vacant,
+Friday,08:45,09:45,G08,Vacant,
+Friday,08:45,09:45,G09,Occupied,OCW1 G09
+Saturday,08:45,09:45,G01,Vacant,
+Saturday,08:45,09:45,G02,Vacant,
+Saturday,08:45,09:45,G03,Vacant,
+Saturday,08:45,09:45,G04,Vacant,
+Saturday,08:45,09:45,G05,Vacant,
+Saturday,08:45,09:45,G06,Vacant,
+Saturday,08:45,09:45,G07,Occupied,PGP2 G07
+Saturday,08:45,09:45,G08,Vacant,
+Saturday,08:45,09:45,G09,Occupied,QRA 2 G09
+Monday,09:45,10:45,G01,Vacant,
+Monday,09:45,10:45,G02,Vacant,
+Monday,09:45,10:45,G03,Vacant,
+Monday,09:45,10:45,G04,Occupied,RANAC2 G04
+Monday,09:45,10:45,G05,Occupied,FDFED2 G05
+Monday,09:45,10:45,G06,Occupied,ADSA1 G06
+Monday,09:45,10:45,G07,Occupied,DSMA3 G07
+Monday,09:45,10:45,G08,Occupied,DSMA2 G08
+Monday,09:45,10:45,G09,Vacant,
+Tuesday,09:45,10:45,G01,Vacant,
+Tuesday,09:45,10:45,G02,Vacant,
+Tuesday,09:45,10:45,G03,Vacant,
+Tuesday,09:45,10:45,G04,Occupied,OOP1 G04
+Tuesday,09:45,10:45,G05,Occupied,CS G05
+Tuesday,09:45,10:45,G06,Vacant,
+Tuesday,09:45,10:45,G07,Vacant,
+Tuesday,09:45,10:45,G08,Occupied,DSMA3 G08
+Tuesday,09:45,10:45,G09,Occupied,OCW2 G09
+Wednesday,09:45,10:45,G01,Vacant,
+Wednesday,09:45,10:45,G02,Vacant,
+Wednesday,09:45,10:45,G03,Vacant,
+Wednesday,09:45,10:45,G04,Vacant,
+Wednesday,09:45,10:45,G05,Occupied,OS2 G05
+Wednesday,09:45,10:45,G06,Vacant,
+Wednesday,09:45,10:45,G07,Occupied,DLD3 G07
+Wednesday,09:45,10:45,G08,Vacant,
+Wednesday,09:45,10:45,G09,Occupied,VLSI G09
+Thursday,09:45,10:45,G01,Vacant,
+Thursday,09:45,10:45,G02,Vacant,
+Thursday,09:45,10:45,G03,Vacant,
+Thursday,09:45,10:45,G04,Vacant,
+Thursday,09:45,10:45,G05,Vacant,
+Thursday,09:45,10:45,G06,Occupied,CNA G06
+Thursday,09:45,10:45,G07,Occupied,CP3 G07
+Thursday,09:45,10:45,G08,Occupied,OOP2 G08
+Thursday,09:45,10:45,G09,Occupied,CP1 G09
+Friday,09:45,10:45,G01,Vacant,
+Friday,09:45,10:45,G02,Vacant,
+Friday,09:45,10:45,G03,Vacant,
+Friday,09:45,10:45,G04,Occupied,VLSI G04
+Friday,09:45,10:45,G05,Vacant,
+Friday,09:45,10:45,G06,Vacant,
+Friday,09:45,10:45,G07,Occupied,DSMA2 G07
+Friday,09:45,10:45,G08,Occupied,DSMA5 G08
+Friday,09:45,10:45,G09,Occupied,DSMA4 G09
+Saturday,09:45,10:45,G01,Vacant,
+Saturday,09:45,10:45,G02,Vacant,
+Saturday,09:45,10:45,G03,Vacant,
+Saturday,09:45,10:45,G04,Vacant,
+Saturday,09:45,10:45,G05,Vacant,
+Saturday,09:45,10:45,G06,Vacant,
+Saturday,09:45,10:45,G07,Occupied,PGP2 G07
+Saturday,09:45,10:45,G08,Vacant,
+Saturday,09:45,10:45,G09,Occupied,QRA 2 G09
+Monday,11:00,12:00,G01,Vacant,
+Monday,11:00,12:00,G02,Vacant,
+Monday,11:00,12:00,G03,Vacant,
+Monday,11:00,12:00,G04,Occupied,DSP G04
+Monday,11:00,12:00,G05,Occupied,DBMS1 G05
+Monday,11:00,12:00,G06,Occupied,CNA G06
+Monday,11:00,12:00,G07,Occupied,DBMS3 G07
+Monday,11:00,12:00,G08,Occupied,DLD2 G08
+Monday,11:00,12:00,G09,Occupied,DLD1 G09
+Tuesday,11:00,12:00,G01,Vacant,
+Tuesday,11:00,12:00,G02,Vacant,
+Tuesday,11:00,12:00,G03,Vacant,
+Tuesday,11:00,12:00,G04,Occupied,DBMS1 G04
+Tuesday,11:00,12:00,G05,Occupied,OOP2 G05
+Tuesday,11:00,12:00,G06,Vacant,
+Tuesday,11:00,12:00,G07,Vacant,
+Tuesday,11:00,12:00,G08,Occupied,DLD2 G08
+Tuesday,11:00,12:00,G09,Occupied,DLD4 G09
+Wednesday,11:00,12:00,G01,Vacant,
+Wednesday,11:00,12:00,G02,Vacant,
+Wednesday,11:00,12:00,G03,Vacant,
+Wednesday,11:00,12:00,G04,Occupied,DLD4 G04
+Wednesday,11:00,12:00,G05,Occupied,FDFED3 G05
+Wednesday,11:00,12:00,G06,Occupied,ADSA1 G06
+Wednesday,11:00,12:00,G07,Occupied,RANAC4 G07
+Wednesday,11:00,12:00,G08,Occupied,CP2 G08
+Wednesday,11:00,12:00,G09,Occupied,OCW1 G09
+Thursday,11:00,12:00,G01,Vacant,
+Thursday,11:00,12:00,G02,Vacant,
+Thursday,11:00,12:00,G03,Vacant,
+Thursday,11:00,12:00,G04,Occupied,FDFED1 G04
+Thursday,11:00,12:00,G05,Occupied,RANAC3 G05
+Thursday,11:00,12:00,G06,Occupied,DBMS1 G06
+Thursday,11:00,12:00,G07,Occupied,DLD3 G07
+Thursday,11:00,12:00,G08,Vacant,
+Thursday,11:00,12:00,G09,Occupied,DLD1 G09
+Friday,11:00,12:00,G01,Vacant,
+Friday,11:00,12:00,G02,Vacant,
+Friday,11:00,12:00,G03,Vacant,
+Friday,11:00,12:00,G04,Occupied,FDFED1 Lab G04
+Friday,11:00,12:00,G05,Occupied,FDFED3 Lab G05
+Friday,11:00,12:00,G06,Occupied,DBMS2 G06
+Friday,11:00,12:00,G07,Occupied,OS1 G07
+Friday,11:00,12:00,G08,Occupied,DLD3 G08
+Friday,11:00,12:00,G09,Occupied,OCW2 G09
+Saturday,11:00,12:00,G01,Vacant,
+Saturday,11:00,12:00,G02,Vacant,
+Saturday,11:00,12:00,G03,Vacant,
+Saturday,11:00,12:00,G04,Vacant,
+Saturday,11:00,12:00,G05,Vacant,
+Saturday,11:00,12:00,G06,Occupied,SE1 G06
+Saturday,11:00,12:00,G07,Occupied,PGP1 G07
+Saturday,11:00,12:00,G08,Occupied,SE2 G08
+Saturday,11:00,12:00,G09,Occupied,QRA 4 G09
+Monday,12:00,13:00,G01,Vacant,
+Monday,12:00,13:00,G02,Vacant,
+Monday,12:00,13:00,G03,Vacant,
+Monday,12:00,13:00,G04,Occupied,OS1 G04
+Monday,12:00,13:00,G05,Vacant,
+Monday,12:00,13:00,G06,Occupied,OS3 G06
+Monday,12:00,13:00,G07,Occupied,DSMA4 G07
+Monday,12:00,13:00,G08,Vacant,
+Monday,12:00,13:00,G09,Vacant,
+Tuesday,12:00,13:00,G01,Vacant,
+Tuesday,12:00,13:00,G02,Vacant,
+Tuesday,12:00,13:00,G03,Vacant,
+Tuesday,12:00,13:00,G04,Occupied,PC4 G04
+Tuesday,12:00,13:00,G05,Occupied,"IDA G05, IDA G05"
+Tuesday,12:00,13:00,G06,Occupied,RANAC2 G06
+Tuesday,12:00,13:00,G07,Vacant,
+Tuesday,12:00,13:00,G08,Occupied,OCW4 G08
+Tuesday,12:00,13:00,G09,Vacant,
+Wednesday,12:00,13:00,G01,Vacant,
+Wednesday,12:00,13:00,G02,Vacant,
+Wednesday,12:00,13:00,G03,Vacant,
+Wednesday,12:00,13:00,G04,Occupied,OOP1 G04
+Wednesday,12:00,13:00,G05,Occupied,FDFED3 G05
+Wednesday,12:00,13:00,G06,Vacant,
+Wednesday,12:00,13:00,G07,Occupied,DSMA3 G07
+Wednesday,12:00,13:00,G08,Vacant,
+Wednesday,12:00,13:00,G09,Occupied,DSMA5 G09
+Thursday,12:00,13:00,G01,Vacant,
+Thursday,12:00,13:00,G02,Vacant,
+Thursday,12:00,13:00,G03,Vacant,
+Thursday,12:00,13:00,G04,Occupied,OS1 G04
+Thursday,12:00,13:00,G05,Occupied,OS2 G05
+Thursday,12:00,13:00,G06,Vacant,
+Thursday,12:00,13:00,G07,Vacant,
+Thursday,12:00,13:00,G08,Occupied,OCW4 G08
+Thursday,12:00,13:00,G09,Occupied,DSMA1 G09
+Friday,12:00,13:00,G01,Vacant,
+Friday,12:00,13:00,G02,Vacant,
+Friday,12:00,13:00,G03,Vacant,
+Friday,12:00,13:00,G04,Occupied,FDFED1 Lab G04
+Friday,12:00,13:00,G05,Occupied,FDFED3 Lab G05
+Friday,12:00,13:00,G06,Occupied,CP3 G06
+Friday,12:00,13:00,G07,Occupied,DSMA1 G07
+Friday,12:00,13:00,G08,Occupied,ADSA3 G08
+Friday,12:00,13:00,G09,Occupied,CP2 G09
+Saturday,12:00,13:00,G01,Vacant,
+Saturday,12:00,13:00,G02,Vacant,
+Saturday,12:00,13:00,G03,Vacant,
+Saturday,12:00,13:00,G04,Vacant,
+Saturday,12:00,13:00,G05,Vacant,
+Saturday,12:00,13:00,G06,Occupied,SE1 G06
+Saturday,12:00,13:00,G07,Occupied,PGP1 G07
+Saturday,12:00,13:00,G08,Occupied,SE2 G08
+Saturday,12:00,13:00,G09,Occupied,QRA 4 G09
+Monday,14:15,15:15,G01,Vacant,
+Monday,14:15,15:15,G02,Vacant,
+Monday,14:15,15:15,G03,Vacant,
+Monday,14:15,15:15,G04,Occupied,DBMS2 G04
+Monday,14:15,15:15,G05,Occupied,ADSA3 G05
+Monday,14:15,15:15,G06,Occupied,FDFED1 G06
+Monday,14:15,15:15,G07,Occupied,OCW3 G07
+Monday,14:15,15:15,G08,Occupied,CP1 G08
+Monday,14:15,15:15,G09,Occupied,RANAC4 G09
+Tuesday,14:15,15:15,G01,Vacant,
+Tuesday,14:15,15:15,G02,Vacant,
+Tuesday,14:15,15:15,G03,Vacant,
+Tuesday,14:15,15:15,G04,Occupied,OS1 G04
+Tuesday,14:15,15:15,G05,Occupied,OS2 G05
+Tuesday,14:15,15:15,G06,Occupied,OS3 G06
+Tuesday,14:15,15:15,G07,Occupied,FDFED2 G07
+Tuesday,14:15,15:15,G08,Occupied,DSP G08
+Tuesday,14:15,15:15,G09,Occupied,DSMA2 G09
+Wednesday,14:15,15:15,G01,Vacant,
+Wednesday,14:15,15:15,G02,Vacant,
+Wednesday,14:15,15:15,G03,Vacant,
+Wednesday,14:15,15:15,G04,Vacant,
+Wednesday,14:15,15:15,G05,Occupied,"IDA G05, IDA G05"
+Wednesday,14:15,15:15,G06,Occupied,OOP3 G06
+Wednesday,14:15,15:15,G07,Vacant,
+Wednesday,14:15,15:15,G08,Occupied,OOP4 G08
+Wednesday,14:15,15:15,G09,Occupied,DLD4 G09
+Thursday,14:15,15:15,G01,Vacant,
+Thursday,14:15,15:15,G02,Vacant,
+Thursday,14:15,15:15,G03,Vacant,
+Thursday,14:15,15:15,G04,Vacant,
+Thursday,14:15,15:15,G05,Occupied,OOP3 G05
+Thursday,14:15,15:15,G06,Vacant,
+Thursday,14:15,15:15,G07,Vacant,
+Thursday,14:15,15:15,G08,Occupied,CP4 G08
+Thursday,14:15,15:15,G09,Vacant,
+Friday,14:15,15:15,G01,Vacant,
+Friday,14:15,15:15,G02,Vacant,
+Friday,14:15,15:15,G03,Vacant,
+Friday,14:15,15:15,G04,Occupied,RANAC1 G04
+Friday,14:15,15:15,G05,Occupied,"IDA G05, IDA G05"
+Friday,14:15,15:15,G06,Occupied,ES G06
+Friday,14:15,15:15,G07,Occupied,ADSA2 G07
+Friday,14:15,15:15,G08,Occupied,DSMA3 G08
+Friday,14:15,15:15,G09,Occupied,CP4 G09
+Saturday,14:15,15:15,G01,Vacant,
+Saturday,14:15,15:15,G02,Vacant,
+Saturday,14:15,15:15,G03,Vacant,
+Saturday,14:15,15:15,G04,Vacant,
+Saturday,14:15,15:15,G05,Vacant,
+Saturday,14:15,15:15,G06,Vacant,
+Saturday,14:15,15:15,G07,Vacant,
+Saturday,14:15,15:15,G08,Vacant,
+Saturday,14:15,15:15,G09,Occupied,QRA 3 G09
+Monday,15:15,16:15,G01,Vacant,
+Monday,15:15,16:15,G02,Vacant,
+Monday,15:15,16:15,G03,Vacant,
+Monday,15:15,16:15,G04,Occupied,RANAC3 G04
+Monday,15:15,16:15,G05,Occupied,ADSA2 G05
+Monday,15:15,16:15,G06,Occupied,FDFED1 G06
+Monday,15:15,16:15,G07,Occupied,OOP4 G07
+Monday,15:15,16:15,G08,Occupied,CP3 G08
+Monday,15:15,16:15,G09,Occupied,VLSI G09
+Tuesday,15:15,16:15,G01,Vacant,
+Tuesday,15:15,16:15,G02,Vacant,
+Tuesday,15:15,16:15,G03,Vacant,
+Tuesday,15:15,16:15,G04,Occupied,ADSA1 G04
+Tuesday,15:15,16:15,G05,Occupied,ADSA3 G05
+Tuesday,15:15,16:15,G06,Occupied,DBMS2 G06
+Tuesday,15:15,16:15,G07,Occupied,FDFED2 G07
+Tuesday,15:15,16:15,G08,Occupied,DSMA1 G08
+Tuesday,15:15,16:15,G09,Occupied,CP2 G09
+Wednesday,15:15,16:15,G01,Vacant,
+Wednesday,15:15,16:15,G02,Vacant,
+Wednesday,15:15,16:15,G03,Vacant,
+Wednesday,15:15,16:15,G04,Occupied,RANAC2 G04
+Wednesday,15:15,16:15,G05,Occupied,DSMA1 G05
+Wednesday,15:15,16:15,G06,Vacant,
+Wednesday,15:15,16:15,G07,Occupied,ES G07
+Wednesday,15:15,16:15,G08,Occupied,DLD2 G08
+Wednesday,15:15,16:15,G09,Occupied,DSMA4 G09
+Thursday,15:15,16:15,G01,Vacant,
+Thursday,15:15,16:15,G02,Vacant,
+Thursday,15:15,16:15,G03,Vacant,
+Thursday,15:15,16:15,G04,Occupied,RANAC2 G04
+Thursday,15:15,16:15,G05,Occupied,FDFED3 G05
+Thursday,15:15,16:15,G06,Occupied,DSP G06
+Thursday,15:15,16:15,G07,Occupied,DSMA2 G07
+Thursday,15:15,16:15,G08,Occupied,OS3 G08
+Thursday,15:15,16:15,G09,Occupied,DSMA5 G09
+Friday,15:15,16:15,G01,Vacant,
+Friday,15:15,16:15,G02,Vacant,
+Friday,15:15,16:15,G03,Vacant,
+Friday,15:15,16:15,G04,Occupied,RANAC4 G04
+Friday,15:15,16:15,G05,Occupied,OOP3 G05
+Friday,15:15,16:15,G06,Occupied,OOP2 G06
+Friday,15:15,16:15,G07,Occupied,OCW3 G07
+Friday,15:15,16:15,G08,Vacant,
+Friday,15:15,16:15,G09,Vacant,
+Saturday,15:15,16:15,G01,Vacant,
+Saturday,15:15,16:15,G02,Vacant,
+Saturday,15:15,16:15,G03,Vacant,
+Saturday,15:15,16:15,G04,Vacant,
+Saturday,15:15,16:15,G05,Vacant,
+Saturday,15:15,16:15,G06,Vacant,
+Saturday,15:15,16:15,G07,Vacant,
+Saturday,15:15,16:15,G08,Vacant,
+Saturday,15:15,16:15,G09,Occupied,QRA 3 G09
+Monday,16:30,17:30,G01,Vacant,
+Monday,16:30,17:30,G02,Vacant,
+Monday,16:30,17:30,G03,Vacant,
+Monday,16:30,17:30,G04,Occupied,DSMA5 G04
+Monday,16:30,17:30,G05,Vacant,
+Monday,16:30,17:30,G06,Vacant,
+Monday,16:30,17:30,G07,Vacant,
+Monday,16:30,17:30,G08,Vacant,
+Monday,16:30,17:30,G09,Vacant,
+Tuesday,16:30,17:30,G01,Vacant,
+Tuesday,16:30,17:30,G02,Vacant,
+Tuesday,16:30,17:30,G03,Vacant,
+Tuesday,16:30,17:30,G04,Occupied,VLSI G04
+Tuesday,16:30,17:30,G05,Vacant,
+Tuesday,16:30,17:30,G06,Occupied,CP1 G06
+Tuesday,16:30,17:30,G07,Occupied,OCW3 G07
+Tuesday,16:30,17:30,G08,Occupied,RANAC1 G08
+Tuesday,16:30,17:30,G09,Occupied,DSMA4 G09
+Wednesday,16:30,17:30,G01,Vacant,
+Wednesday,16:30,17:30,G02,Vacant,
+Wednesday,16:30,17:30,G03,Vacant,
+Wednesday,16:30,17:30,G04,Vacant,
+Wednesday,16:30,17:30,G05,Vacant,
+Wednesday,16:30,17:30,G06,Vacant,
+Wednesday,16:30,17:30,G07,Vacant,
+Wednesday,16:30,17:30,G08,Occupied,EE2 G08
+Wednesday,16:30,17:30,G09,Vacant,
+Thursday,16:30,17:30,G01,Vacant,
+Thursday,16:30,17:30,G02,Vacant,
+Thursday,16:30,17:30,G03,Vacant,
+Thursday,16:30,17:30,G04,Occupied,OOP1 G04
+Thursday,16:30,17:30,G05,Vacant,
+Thursday,16:30,17:30,G06,Occupied,DBMS3 G06
+Thursday,16:30,17:30,G07,Vacant,
+Thursday,16:30,17:30,G08,Occupied,EDL1 G08
+Thursday,16:30,17:30,G09,Occupied,CS G09
+Friday,16:30,17:30,G01,Vacant,
+Friday,16:30,17:30,G02,Vacant,
+Friday,16:30,17:30,G03,Vacant,
+Friday,16:30,17:30,G04,Vacant,
+Friday,16:30,17:30,G05,Vacant,
+Friday,16:30,17:30,G06,Occupied,EE1 G06
+Friday,16:30,17:30,G07,Vacant,
+Friday,16:30,17:30,G08,Vacant,
+Friday,16:30,17:30,G09,Occupied,QRA 1 G09
+Saturday,16:30,17:30,G01,Vacant,
+Saturday,16:30,17:30,G02,Vacant,
+Saturday,16:30,17:30,G03,Vacant,
+Saturday,16:30,17:30,G04,Occupied,EDL2 G04
+Saturday,16:30,17:30,G05,Vacant,
+Saturday,16:30,17:30,G06,Vacant,
+Saturday,16:30,17:30,G07,Vacant,
+Saturday,16:30,17:30,G08,Vacant,
+Saturday,16:30,17:30,G09,Vacant,
+Monday,17:30,18:30,G01,Vacant,
+Monday,17:30,18:30,G02,Vacant,
+Monday,17:30,18:30,G03,Vacant,
+Monday,17:30,18:30,G04,Vacant,
+Monday,17:30,18:30,G05,Vacant,
+Monday,17:30,18:30,G06,Vacant,
+Monday,17:30,18:30,G07,Vacant,
+Monday,17:30,18:30,G08,Vacant,
+Monday,17:30,18:30,G09,Vacant,
+Tuesday,17:30,18:30,G01,Vacant,
+Tuesday,17:30,18:30,G02,Vacant,
+Tuesday,17:30,18:30,G03,Vacant,
+Tuesday,17:30,18:30,G04,Vacant,
+Tuesday,17:30,18:30,G05,Vacant,
+Tuesday,17:30,18:30,G06,Vacant,
+Tuesday,17:30,18:30,G07,Vacant,
+Tuesday,17:30,18:30,G08,Vacant,
+Tuesday,17:30,18:30,G09,Vacant,
+Wednesday,17:30,18:30,G01,Vacant,
+Wednesday,17:30,18:30,G02,Vacant,
+Wednesday,17:30,18:30,G03,Vacant,
+Wednesday,17:30,18:30,G04,Vacant,
+Wednesday,17:30,18:30,G05,Vacant,
+Wednesday,17:30,18:30,G06,Vacant,
+Wednesday,17:30,18:30,G07,Vacant,
+Wednesday,17:30,18:30,G08,Occupied,EE2 G08
+Wednesday,17:30,18:30,G09,Vacant,
+Thursday,17:30,18:30,G01,Vacant,
+Thursday,17:30,18:30,G02,Vacant,
+Thursday,17:30,18:30,G03,Vacant,
+Thursday,17:30,18:30,G04,Vacant,
+Thursday,17:30,18:30,G05,Vacant,
+Thursday,17:30,18:30,G06,Vacant,
+Thursday,17:30,18:30,G07,Vacant,
+Thursday,17:30,18:30,G08,Occupied,EDL1 G08
+Thursday,17:30,18:30,G09,Vacant,
+Friday,17:30,18:30,G01,Vacant,
+Friday,17:30,18:30,G02,Vacant,
+Friday,17:30,18:30,G03,Vacant,
+Friday,17:30,18:30,G04,Vacant,
+Friday,17:30,18:30,G05,Vacant,
+Friday,17:30,18:30,G06,Occupied,EE1 G06
+Friday,17:30,18:30,G07,Vacant,
+Friday,17:30,18:30,G08,Vacant,
+Friday,17:30,18:30,G09,Vacant,
+Saturday,17:30,18:30,G01,Vacant,
+Saturday,17:30,18:30,G02,Vacant,
+Saturday,17:30,18:30,G03,Vacant,
+Saturday,17:30,18:30,G04,Occupied,EDL2 G04
+Saturday,17:30,18:30,G05,Vacant,
+Saturday,17:30,18:30,G06,Vacant,
+Saturday,17:30,18:30,G07,Vacant,
+Saturday,17:30,18:30,G08,Vacant,
+Saturday,17:30,18:30,G09,Vacant,

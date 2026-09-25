@@ -31,8 +31,21 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<!--
+  Fonts + PapaParse are loaded WITHOUT blocking the page.
+  Previously these were plain blocking <link rel="stylesheet"> / <script src="...">
+  tags sitting in <head>. A blocking tag stops the browser from painting
+  ANYTHING until that resource finishes loading. On a slow/flaky/campus
+  network, if cdnjs.cloudflare.com or fonts.googleapis.com hangs (doesn't
+  fail outright, just never responds), the browser waits forever and the
+  page stays a blank white screen — which is exactly the bug reported.
+  Loading them as non-blocking fixes that: the page now paints immediately
+  regardless of how slow/blocked those two requests are.
+-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap"
+      media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap"></noscript>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" defer></script>
 <style>
   :root {
     --bg: #fdfbf7;
@@ -603,14 +616,33 @@
   DATA_PATH: "data"
 };
   function rawUrl(filename) {
-    return `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.DATA_PATH}/${filename}?t=${Date.now()}`;
+    // NOTE: no cache-busting "?t=" timestamp here anymore. A timestamp
+    // made every request's URL unique, which meant the service worker's
+    // cache (keyed by full URL) could NEVER be matched again when
+    // offline — every offline lookup was a guaranteed miss. Freshness
+    // when online is instead handled by fetch's { cache: "no-store" }
+    // below, so we get the best of both: always-fresh data when online,
+    // and a working offline cache fallback when not.
+    return `https://raw.githubusercontent.com/${CONFIG.GITHUB_USER}/${CONFIG.GITHUB_REPO}/${CONFIG.GITHUB_BRANCH}/${CONFIG.DATA_PATH}/${filename}`;
   }
 
   // Local fallback so the site works before the GitHub repo/config
   // above is filled in (e.g. testing straight off disk or Netlify
   // preview with the CSVs sitting next to index.html).
   function localUrl(filename) {
-    return `./data/${filename}?t=${Date.now()}`;
+    return `./data/${filename}`;
+  }
+
+  // Wraps fetch() with a hard timeout. Plain fetch() has NO default
+  // timeout — on a flaky/captive-portal network the request can hang
+  // forever with no error and no response, which is what made the app
+  // look stuck/"refreshing forever" with nothing on screen. This makes
+  // a stalled request fail fast instead, so the app can fall back
+  // (GitHub -> local copy -> service-worker cache) quickly.
+  function fetchWithTimeout(url, ms) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    return fetch(url, { cache: "no-store", signal: controller.signal }).finally(() => clearTimeout(timer));
   }
 
   const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -658,12 +690,12 @@
   // ---------------- CSV loading ----------------
 
   function fetchCsv(filename) {
-    return fetch(rawUrl(filename))
+    return fetchWithTimeout(rawUrl(filename), 8000)
       .then(res => {
         if (!res.ok) throw new Error("raw fetch failed");
         return res.text();
       })
-      .catch(() => fetch(localUrl(filename)).then(res => {
+      .catch(() => fetchWithTimeout(localUrl(filename), 8000).then(res => {
         if (!res.ok) throw new Error("local fetch failed");
         return res.text();
       }))
@@ -918,24 +950,46 @@
   // Keeps the page from scrolling when the current content fits within
   // the viewport (so the app feels "solid"/app-like), but still allows
   // natural scrolling on days with enough classes/labs to overflow.
+  //
+  // iOS-SPECIFIC BUG FIXED HERE: this used to clear overflowY to ""
+  // before every measurement, then set it back to "hidden"/"auto".
+  // overflow-y doesn't actually change an element's scrollHeight — it
+  // only changes whether it's scrollable — so that clear step wasn't
+  // needed for the measurement, but it WAS momentarily un-locking the
+  // page on every single resize. On iPhone, Safari's address bar
+  // grows/shrinks based on whether the page is scrollable, so that
+  // momentary un-lock could itself trigger the address bar to
+  // show/hide, which fires another 'resize' event, which ran this
+  // function again — an infinite feedback loop that looks exactly like
+  // the page endlessly "refreshing". Fixed by measuring without
+  // touching overflow first, skipping the DOM write entirely when the
+  // fit state hasn't actually changed, and debouncing resize so rapid
+  // iOS toolbar jitter doesn't retrigger this repeatedly.
   let scrollLockRaf = null;
+  let scrollLockDebounce = null;
+  let lastScrollLockFits = null;
+
   function updateScrollLock() {
     if (scrollLockRaf) cancelAnimationFrame(scrollLockRaf);
-    // Temporarily clear any lock so we measure the content's natural height.
-    document.documentElement.style.overflowY = "";
-    document.body.style.overflowY = "";
     scrollLockRaf = requestAnimationFrame(() => {
       const contentHeight = document.documentElement.scrollHeight;
       const viewportHeight = window.innerHeight;
       const fits = contentHeight <= viewportHeight + 1; // +1 to absorb rounding
+      if (fits === lastScrollLockFits) return; // no change — don't touch the DOM
+      lastScrollLockFits = fits;
       document.documentElement.style.overflowY = fits ? "hidden" : "auto";
       document.body.style.overflowY = fits ? "hidden" : "auto";
       if (fits) window.scrollTo(0, 0);
     });
   }
 
-  window.addEventListener("resize", updateScrollLock);
-  window.addEventListener("orientationchange", updateScrollLock);
+  function debouncedUpdateScrollLock() {
+    clearTimeout(scrollLockDebounce);
+    scrollLockDebounce = setTimeout(updateScrollLock, 150);
+  }
+
+  window.addEventListener("resize", debouncedUpdateScrollLock);
+  window.addEventListener("orientationchange", debouncedUpdateScrollLock);
 
   // ---------------- Swipe navigation ----------------
 
@@ -1065,11 +1119,29 @@
 
   // ---------------- Installable web app ----------------
 
+  function isRunningStandalone() {
+    return (
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true // iOS home-screen flag
+    );
+  }
+
   function initInstallPrompt() {
     if (!els.installBtn) return;
     let deferredPrompt = null;
 
+    // Already installed / running as an app — nothing to promote.
+    if (isRunningStandalone()) {
+      els.installBtn.hidden = true;
+      return;
+    }
+
     window.addEventListener("beforeinstallprompt", (e) => {
+      // Chrome only fires this once the site meets every installability
+      // requirement (manifest + icons + HTTPS + an active service
+      // worker). If the button never appears, that means Chrome isn't
+      // firing this event — check DevTools > Application > Manifest for
+      // the specific reason it's rejecting the site as installable.
       e.preventDefault();
       deferredPrompt = e;
       els.installBtn.hidden = false;
@@ -1091,8 +1163,40 @@
 
   function initServiceWorker() {
     if (!("serviceWorker" in navigator)) return;
-    navigator.serviceWorker.register("sw.js").catch(() => {
-      // Non-fatal — the site still works without offline/install support.
+
+    // updateViaCache: "none" forces the browser to always fetch sw.js
+    // itself straight from the network (bypassing HTTP caching on the
+    // InfinityFree host), so bumping SW_VERSION inside sw.js is picked
+    // up right away instead of possibly being stuck behind a long HTTP
+    // cache lifetime on the old sw.js file.
+    navigator.serviceWorker
+      .register("sw.js", { updateViaCache: "none" })
+      .then((registration) => {
+        // Force an immediate check for a new sw.js right now, instead
+        // of waiting for the browser's own (throttled, ~daily) check.
+        // This is what makes "I just edited sw.js on InfinityFree" show
+        // up for a user who opens the app shortly after.
+        registration.update().catch(() => {});
+        // Keep checking periodically for anyone who leaves the tab
+        // open for a long stretch (e.g. a whole class/lab session).
+        setInterval(() => registration.update().catch(() => {}), 60 * 60 * 1000);
+      })
+      .catch((err) => {
+        // Non-fatal — the site still works without offline/install
+        // support. Logged so it's visible via remote debugging
+        // (chrome://inspect) if installability ever silently breaks.
+        console.warn("Service worker registration failed:", err);
+      });
+
+    // The new service worker calls skipWaiting()/clients.claim() as
+    // soon as it activates, which fires "controllerchange" here. A
+    // one-time reload is what actually gets the fresh HTML/CSS/JS in
+    // front of the user with no manual cache-clearing required.
+    let hasReloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (hasReloaded) return;
+      hasReloaded = true;
+      window.location.reload();
     });
   }
 

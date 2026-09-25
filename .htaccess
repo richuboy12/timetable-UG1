@@ -1,0 +1,30 @@
+# --------------------------------------------------------------------
+# Required for Chrome to recognize this as an installable PWA.
+#
+# Shared hosts like InfinityFree often don't ship the newer
+# .webmanifest -> application/manifest+json mapping in their default
+# Apache config, and older environments serve it as generic
+# application/octet-stream / text/plain instead. Some versions of
+# Chrome will silently refuse to treat the manifest as valid (no
+# install prompt, no "Install app" menu entry) when that happens, even
+# though every other requirement is met.
+# --------------------------------------------------------------------
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+  AddType application/json .json
+  AddType text/javascript .js
+</IfModule>
+
+# --------------------------------------------------------------------
+# sw.js and the manifest must never be served from a stale HTTP cache,
+# or the auto-update pipeline (bump SW_VERSION in sw.js -> browser
+# notices -> new files cached -> page reloads) can stall for as long as
+# the cache lifetime. Everything else (images, the actual app shell
+# files) is fine to cache normally at the HTTP layer since the service
+# worker itself handles freshness for those.
+# --------------------------------------------------------------------
+<IfModule mod_headers.c>
+  <FilesMatch "^(sw\.js|manifest\.webmanifest)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
